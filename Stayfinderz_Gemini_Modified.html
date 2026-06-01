@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StayFinderz – AI Travel Proposal Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #F47820;
+  --orange-light: #FFF3E8;
+  --dark: #1A1A2E;
+  --mid: #2D2D44;
+  --text: #333;
+  --muted: #777;
+  --border: #E8E8E8;
+  --white: #fff;
+  --green: #2ECC71;
+  --red: #E74C3C;
+  --blue: #3498DB;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #F5F6FA; color: var(--text); min-height: 100vh; }
+
+/* ── NAV ── */
+.nav { background: var(--dark); color: white; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-logo img { height: 36px; }
+.nav-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--orange); }
+.nav-right { display: flex; gap: 1rem; align-items: center; }
+.nav-btn { background: var(--orange); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+.nav-btn:hover { background: #d96c10; transform: translateY(-1px); }
+.nav-btn.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.3); }
+.nav-btn.ghost:hover { background: rgba(255,255,255,0.1); transform: none; }
+
+/* ── TABS ── */
+.tab-bar { background: var(--mid); display: flex; padding: 0 2rem; gap: 4px; }
+.tab { padding: 10px 20px; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 0.88rem; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+.tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+.tab:hover:not(.active) { color: white; }
+
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── LAYOUT ── */
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+.card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 1.5rem; }
+.card-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+.card-title .icon { color: var(--orange); }
+
+/* ── UPLOAD ZONE ── */
+.upload-zone { border: 2px dashed var(--border); border-radius: 10px; padding: 3rem; text-align: center; cursor: pointer; transition: all 0.2s; background: #FAFAFA; }
+.upload-zone:hover, .upload-zone.drag { border-color: var(--orange); background: var(--orange-light); }
+.upload-zone .icon-big { font-size: 3rem; margin-bottom: 1rem; }
+.upload-zone h3 { font-size: 1.1rem; color: var(--dark); margin-bottom: 0.5rem; }
+.upload-zone p { color: var(--muted); font-size: 0.9rem; }
+.upload-zone input { display: none; }
+
+/* ── FILE LIST ── */
+.file-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--orange-light); border-radius: 8px; margin-bottom: 8px; }
+.file-item .file-icon { font-size: 1.5rem; }
+.file-item .file-name { flex: 1; font-size: 0.9rem; font-weight: 500; }
+.file-item .file-size { color: var(--muted); font-size: 0.8rem; }
+.file-item .remove { background: none; border: none; color: var(--red); cursor: pointer; font-size: 1.1rem; }
+
+/* ── FORM ELEMENTS ── */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+.form-row.full { grid-template-columns: 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group label { font-size: 0.82rem; font-weight: 600; color: var(--mid); text-transform: uppercase; letter-spacing: 0.5px; }
+.form-group input, .form-group select, .form-group textarea { padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text); transition: border-color 0.2s; outline: none; background: white; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--orange); }
+.form-group textarea { resize: vertical; min-height: 80px; }
+
+/* ── MARKUP SECTION ── */
+.markup-tabs { display: flex; gap: 8px; margin-bottom: 1rem; }
+.markup-tab { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; background: white; }
+.markup-tab.active { background: var(--orange); color: white; border-color: var(--orange); }
+.markup-sub { display: none; }
+.markup-sub.active { display: block; }
+
+/* ── FOREX TABLE ── */
+.forex-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.forex-table th { background: var(--dark); color: white; padding: 8px 12px; text-align: left; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.forex-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+.forex-table tr:nth-child(even) td { background: #FAFAFA; }
+.forex-table input { width: 100%; padding: 5px 8px; border: 1.5px solid var(--border); border-radius: 5px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; }
+.forex-table input:focus { outline: none; border-color: var(--orange); }
+
+/* ── BUTTONS ── */
+.btn { padding: 10px 20px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover { background: #d96c10; transform: translateY(-1px); }
+.btn-secondary { background: var(--dark); color: white; }
+.btn-secondary:hover { background: var(--mid); }
+.btn-outline { background: white; border: 1.5px solid var(--orange); color: var(--orange); }
+.btn-outline:hover { background: var(--orange-light); }
+.btn-danger { background: var(--red); color: white; }
+.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+.btn-full { width: 100%; }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ── AI PROCESS ── */
+.process-steps { display: flex; gap: 0; margin: 1rem 0; }
+.step { flex: 1; text-align: center; padding: 0.8rem; position: relative; }
+.step:not(:last-child)::after { content: '→'; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); color: var(--orange); font-size: 1.2rem; }
+.step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; margin: 0 auto 6px; }
+.step-label { font-size: 0.75rem; color: var(--muted); font-weight: 500; }
+
+/* ── STATUS / ALERTS ── */
+.alert { padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 8px; }
+.alert-info { background: #EBF5FB; color: #1A5276; border-left: 4px solid var(--blue); }
+.alert-success { background: #EAFAF1; color: #186A3B; border-left: 4px solid var(--green); }
+.alert-warning { background: #FEF9E7; color: #7D6608; border-left: 4px solid #F1C40F; }
+.alert-error { background: #FDEDEC; color: #922B21; border-left: 4px solid var(--red); }
+
+/* ── LOADING ── */
+.loading { display: flex; align-items: center; gap: 10px; padding: 1rem; color: var(--muted); }
+.spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── PROPOSALS LIST ── */
+.proposal-card { background: white; border-radius: 10px; padding: 1.2rem 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--orange); margin-bottom: 1rem; }
+.proposal-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+.proposal-num { font-size: 0.75rem; background: var(--orange); color: white; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+.proposal-client { font-weight: 600; font-size: 1rem; color: var(--dark); }
+.proposal-dest { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.5rem; }
+.proposal-meta { display: flex; gap: 1rem; font-size: 0.82rem; color: var(--muted); flex-wrap: wrap; }
+.proposal-meta span { display: flex; align-items: center; gap: 4px; }
+.badge { padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+.badge-green { background: #EAFAF1; color: #1E8449; }
+.badge-orange { background: var(--orange-light); color: #C56E00; }
+.badge-blue { background: #EBF5FB; color: #1A5276; }
+
+/* ── PREVIEW OVERLAY ── */
+.preview-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; overflow-y: auto; padding: 2rem; }
+.preview-overlay.show { display: block; }
+.preview-container { background: white; max-width: 900px; margin: 0 auto; border-radius: 12px; overflow: hidden; }
+.preview-header { background: var(--dark); color: white; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+.preview-close { background: none; border: none; color: white; cursor: pointer; font-size: 1.5rem; }
+
+/* ── PROPOSAL DOCUMENT ── */
+.doc { font-family: 'DM Sans', sans-serif; color: #333; }
+.doc-header { background: linear-gradient(135deg, #1A1A2E 0%, #2D2D44 100%); color: white; padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; }
+.doc-logo { height: 50px; }
+.doc-header-right { text-align: right; }
+.doc-proposal-num { font-size: 0.8rem; opacity: 0.7; }
+.doc-proposal-num strong { color: var(--orange); font-size: 1rem; }
+.doc-hero { background: linear-gradient(135deg, var(--orange) 0%, #C56E00 100%); color: white; padding: 2.5rem; }
+.doc-hero h1 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.5rem; }
+.doc-hero .subtitle { opacity: 0.9; font-size: 0.95rem; }
+.doc-meta-bar { background: #F5F6FA; padding: 1rem 2.5rem; display: flex; gap: 2rem; border-bottom: 1px solid var(--border); }
+.doc-meta-item { display: flex; flex-direction: column; gap: 2px; }
+.doc-meta-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); font-weight: 600; }
+.doc-meta-value { font-weight: 600; color: var(--dark); font-size: 0.9rem; }
+.doc-body { padding: 2rem 2.5rem; }
+.doc-section { margin-bottom: 2rem; }
+.doc-section-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--dark); border-left: 4px solid var(--orange); padding-left: 12px; margin-bottom: 1rem; }
+.doc-greeting { background: var(--orange-light); border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem; }
+.doc-greeting p { line-height: 1.7; margin-bottom: 0.5rem; }
+.itinerary-day { margin-bottom: 1.5rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.day-header { background: var(--dark); color: white; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+.day-badge { background: var(--orange); color: white; font-weight: 700; font-size: 0.85rem; padding: 3px 10px; border-radius: 12px; }
+.day-destination { font-weight: 600; font-size: 0.95rem; }
+.day-date { font-size: 0.82rem; opacity: 0.7; margin-left: auto; }
+.day-body { padding: 1rem 1.5rem; }
+.day-body p { line-height: 1.7; color: #444; font-size: 0.92rem; }
+.day-info { display: flex; gap: 1rem; margin-top: 0.8rem; flex-wrap: wrap; }
+.day-info-item { background: #F5F6FA; padding: 6px 12px; border-radius: 6px; font-size: 0.82rem; }
+.day-info-item strong { color: var(--orange); }
+.pricing-box { background: linear-gradient(135deg, var(--dark) 0%, var(--mid) 100%); color: white; border-radius: 12px; padding: 2rem; margin: 2rem 0; }
+.pricing-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 1rem; color: var(--orange); }
+.price-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
+.price-row.total { border-bottom: none; padding-top: 12px; font-size: 1.2rem; font-weight: 700; color: var(--orange); }
+.inc-exc { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+.inc-box, .exc-box { padding: 1rem; border-radius: 8px; }
+.inc-box { background: #EAFAF1; }
+.exc-box { background: #FDEDEC; }
+.inc-box h4 { color: #186A3B; font-size: 0.85rem; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.exc-box h4 { color: #922B21; font-size: 0.85rem; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.inc-box li, .exc-box li { font-size: 0.85rem; margin-bottom: 3px; line-height: 1.5; }
+.doc-footer { background: var(--dark); color: white; padding: 1.5rem 2.5rem; display: flex; align-items: center; justify-content: space-between; }
+.doc-footer .company-info { font-size: 0.82rem; opacity: 0.8; }
+.doc-footer .gst { font-size: 0.75rem; opacity: 0.5; margin-top: 3px; }
+.doc-footer img { height: 36px; }
+.doc-tnc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; background: #F5F6FA; padding: 1rem 1.5rem; border-radius: 8px; }
+.notes-box { background: #FEF9E7; border: 1px solid #F1C40F; border-radius: 8px; padding: 1rem 1.5rem; margin: 1rem 0; }
+.notes-box h4 { color: #7D6608; font-size: 0.85rem; margin-bottom: 0.5rem; }
+.notes-box p, .notes-box li { font-size: 0.85rem; color: #7D6608; }
+
+/* ── STATS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+.stat-card { background: white; border-radius: 10px; padding: 1.2rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 3px solid var(--orange); }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--dark); font-weight: 700; }
+.stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+/* ── SETTINGS ── */
+.settings-section { margin-bottom: 2rem; }
+.settings-section h3 { font-size: 0.88rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 1rem; font-weight: 600; }
+.company-logo-box { display: flex; align-items: center; gap: 1.5rem; padding: 1rem; background: var(--orange-light); border-radius: 10px; margin-bottom: 1rem; }
+.company-logo-box img { height: 60px; border-radius: 6px; }
+
+/* ── EDIT MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 8888; align-items: center; justify-content: center; }
+.modal-overlay.show { display: flex; }
+.modal { background: white; border-radius: 12px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+.modal-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-header h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); }
+.modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--muted); }
+.modal-body { padding: 1.5rem; }
+.modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ── VERSION HISTORY ── */
+.version-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; font-size: 0.85rem; }
+.version-num { background: var(--dark); color: white; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.version-details { flex: 1; }
+.version-date { color: var(--muted); font-size: 0.78rem; }
+
+/* ── TOGGLE SWITCH ── */
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.toggle-row:last-child { border-bottom: none; }
+.toggle-label { font-size: 0.9rem; }
+.toggle-label small { display: block; color: var(--muted); font-size: 0.78rem; }
+.toggle-switch { width: 44px; height: 24px; background: var(--border); border-radius: 12px; cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; }
+.toggle-switch.on { background: var(--orange); }
+.toggle-switch::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: white; top: 3px; left: 3px; transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.toggle-switch.on::after { left: 23px; }
+
+/* ── LINK BOX ── */
+.link-box { background: var(--orange-light); border: 1.5px solid var(--orange); border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; margin: 1rem 0; }
+.link-box input { flex: 1; border: none; background: transparent; font-size: 0.88rem; color: var(--dark); font-family: 'DM Sans', sans-serif; outline: none; }
+.link-box .copy-btn { background: var(--orange); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .form-row { grid-template-columns: 1fr; }
+  .form-row.three { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .inc-exc { grid-template-columns: 1fr; }
+  .doc-meta-bar { flex-wrap: wrap; gap: 1rem; }
+  .process-steps { flex-direction: column; gap: 0.5rem; }
+  .step:not(:last-child)::after { display: none; }
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 3px; }
+
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+.text-muted { color: var(--muted); }
+.text-orange { color: var(--orange); }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.tag { display: inline-block; padding: 3px 8px; background: var(--orange-light); color: var(--orange); border-radius: 4px; font-size: 0.78rem; font-weight: 600; margin: 2px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCACUAXgDASIAAhEBAxEB/8QAHQABAAIDAAMBAAAAAAAAAAAAAAUHBggJAQMEAv/EAE0QAAEDAwIDAwUIDwYGAwAAAAEAAgMEBQYHEQgSITFBURMUYXGBCSIyNlVzkbMVFhc3UnJ0dZKTobGywtEjMzQ4QoIkQ1NUYuEnhKL/xAAbAQEAAwEBAQEAAAAAAAAAAAAABAUHBgMBAv/EADERAQABAwIDBQYHAQEAAAAAAAABAgMEBREhMbETMzRxgRJBUWGRoQYUFSJSweEWsv/aAAwDAQACEQMRAD8A3LREQEREBERAREQEREBERAREQEREBERAREQEWG5vlFzs1yjpKSjY9j2cwe8E8x8BsoL7e8i+T4v1TlV3tXxrNybdW+8fJb2NEyr1uLlO20/NZ6Ksos8v3nETH2+HZ7gA3kcCfUrLhc58THubyuc0Ejw9CkYmday9+z34fJGzNPvYe3a7cfhO79IiKYgiIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIMbyQA5PYg4AgyP7R6FkPkov+mz9ELHsk+NFi+cf+5ZIoliI7S55x0hNyZnsrXlP/qWNZixjayycrGgmvb2D0FZKsbzT/GWP8vb+4rJEsd9c9Ohkdxa9eoiIpaEIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIC9VXUQ0lNJU1DwyKNpc5x7gvasJ1drJIbNTUjHEColJft3ho7PpI+hRszI/LWKrvwSsHG/NZFNn4ygsgz24VM7o7Z/w0A6B2273en0KBdkd9cdzdanf8dRPevKz+9n5N6r2qq5+rSbOnYtmn2aaI+j7prxdZpoppa+d8kR3Y4u6t9S932w3z5Uqv01FovGMi7HKqfrL3nGszwmiPpD7qi8XSodG6evnkMTuZhc74J8Qvd9sV8+VKr9NRa8elIyLscYqn6yTjWZjb2I+kJ+35dfqOUP8+fM3vZL74FWbiWRU1+oy9g8nUR/3se/Z6R6FSinsArH0eUUnK4hsrvJuHiCrXS9UvWr1NFdW9MztxU+r6RYvWKq6KYiqI34LoREXdM9EREBERAREQEREBERAREQEREBERAREQEREBERAREQEUZk9+s+NWae8X2vgoaGBvNJLK7YD+p9C1syzjRw23176ew49crtEwkeXc5sLXekA9dvYg2mRa04DxiYFfbhHRX63V1gdI7lbNIRJEPWR1H0LY63VtHcqGGuoKmKpppmh8csTg5rge8EIPoREQEREBERAREQFX2sn93bPXL/ACqwVXusvwLZ65f5VV614Kv06wt9B8fb9ekq7REWfNJEVkYthtmuNgpK2pbOZZWku5ZNh2keCk/tAsH4NT+s/wDSureg5VyiK422mN+f+KK7+IsS3XNFW+8Tty/1UiK2/tAx/wDBqf1v/pQ2Z4jaLVYJq2kbOJWFoHM/cdSvl3Qsm1RNdW20ceb7Z/EOJeuU26d95nbl/qvO9SmK/GO3/PtUYpPFPjJb/n2qsxu+o846rXK7ivynovNFVvEpq3DpDhUF3bbxcK+tqPN6SBzuVhdylznOPgAP2hYjwucQz9WblW2K8WiG23Wni8vGYHl0crN9j29QQtPZM2AREQEREBERARadaycVuYYZqhfMVt9gs81LbqnyMck3PzuHKDudjt3rbPFbjJeMZtl1ljbHJWUsc7mN7GlzQSB9KCSREQEREBERAREQEREBERAREQEREGhXuhGb3Kv1EpsJjmfHbbbTMnkjaekkr9zufHYbbesqV4cuFvHs209ostyi71wNwaXwU9KQ0MbvsCSRuSvt4+9KbzU3+DUay0ktZSvp209wZG3mdEW78r9h3EHb2KpdEOI7NtMLY2xxQ013srHlzKWp3a6LftDHjsHoIKDN9eeEy8YvTMu2ASVt/pHSCOSiMe9RHudg4bfCb4+C2F4PcFz/AAPBJ7bmtTEIpZBLR0Qk530wI6hx7Bv4DsUTphxaafZVUQ0F7jnxytkIaDUkOgJ/HHZ7QFYuvj7vcNEMhkxCapmuMtI11E+gkPlHHnb1YW9ezfsQave6A5Xklm1Xs9Dab5cKGm+wzJDHTzuY0uM0oJIB7dgPoV+cGF0uN40GtdbdK2etqTUTNMszy5xAd06lc8tQmZnHe2R5ybubmIRyfZN73S+T3O23N15d+b9qyPBYdZjY4H4c7Lm2rnJi+x8srYebfrsGnbdB1RRURrnqZmOmmi1krbZZKq4XyqpWR1FVNEXx0bgwcz5Nu1256A9O3dae2u3a8avST3ukmyS9Rh5Bm84cyJp/BaNw0eoIOnKLmLY9QdYtFMvjoq6vu9LJC4PmtlxkdJDMz8VxPb+E3qty9Ra2s1g4a25RhVzuNqrn03nsDaaodG/yke4khcWkbjcOHsBQXei538KGsuT2TV+3WrJsiudbabo/zKWKsqXyNikcdmPAceh5th7Vvzmd9pcaxO6X+seGwUFK+dxP/iCUEuq91l+BbPXL/KtG9Msv1N1S1vt9vZmWQwRXCv8ALTsgr5GMhgB5nAAHYANGw9i3h1ibyQ2lm5PL5Qbk7k9GKr1rwVfp1hb6D4+369JV8iIs+aSurA/ijb/mz/EVH53k9VYJ6aKmgik8qwuJfv06qRwT4pW/5s/xFevK8XpsgkgkmqZIXRAtHKAdwVoNdN+rApixP7tqf6ZtRVj06jXORG9G9W/3Yb90a6/9nS/t/qvgv2Z193tr6GemgYx5BJbvv0Kyb7m1D8o1H6AWG5jZorHdvM4Znyt5A7mcNj1XO5kanZtTN6r9s8Oce902DOk370RYp/dHHlPuQqksV+Mlv+faoxSmKfGS3/PtVPjd9R5x1XmV3FflPRmeu2ldl1axGOxXeeakkp5xPS1MOxdE/Yg9D2gg9Qsa4e9ALBpHWVlzp7lUXW5VUfkjPKwNEbN99mgeKieOy/XnH9EWVdjulZbamW7QQumpZnRvLC2Qlu7TvsS0Ks/c9stye/ZDk1Fe7/c7nTw0kckUdXUvlDHF+xI5idui05kzcdFzh4ntQs6tmvGT0VuzC+0dLT1fJDDBXyMZG0AdAAdgvVlepmt+qVmpm2qK/ts9BSxwSi3eU2me1oDpJHt6vcSN/Qg6RouXWlmtuomnORQyMvdxq6GOUCrtlbM6SORu/vhs7fkd6RsukseYWR2AR5u6qayzyUDa8Su7oywOHt2KDIEXNzWniLz7UG/zUVguVdZ7KZDHTUdC9zJJhv0L3N984nw7FEY1eNetOpWX+lGV0lK1wfI2pbLJTyD/AM2u3BCCP4pv8wuYfl/8jV0p00+95j35tg+rC5VaiZTVZrnNzymtp4qepuMwlkjjJLWu5QDtv6l06s+TWrEND7Zkt7nEFDQ2eGWRx7T/AGY2aPEk7AD0oM8Rc4s/1s1Y1kyt1lxWS50VDM4tprZbHua5zfGRzerj47nYKDvuL686XRMyOsOS2iJhG9XFVvc1u/c4gkfSg6cotb+EHX+q1HZJiuWOi+2Gmi8pFUMaGirYO0kDoHjv26FUbxq5rmFn14uFBacovNBSR00BZDT1skbGksBJAB2QdAkXM/IeIHUy/wCH2PEbTdrpTCipRFV1FPK91VWybn3znj3222w2+lT9W3V+4aLYo+wvy6apFZWedOglm59uYcvN139W6Doii5eXCn19t9FLW10mcU9NCwvklknnDWNHaSd+xYrDqDqDJKyOHMcidI5wDWtuEpJPcB75B1tRY1pX9lBptjn2adO+5fY2Dzp0xJkMnIObmJ677rJUBERAREQEREHprX0jKdwrXwthd713liA079Njv0VM6kcMel+Yyy1cdukstdJuTNQO5AT4lnwVrLxxW7Um3aky1l8utwrcbmk8raXMJbBAPwOUdA8HvPU9DupnSnjGvOP2Cms+XWA3s0zBGythn5JXNHQc4I2J9O4QYVxF8Od60otzL/TXSO72N8oiMvJySwuPwQ4dhB8R39ytj3PLUG8VtbdMEuVXJU0kFOKqi8o4kxbHZzR6Oo6KruIziRumq1ijxyisrLPZxKJZQ6Xykszm/BBOwDQO3Yb+tWz7nlp7c7eLrnlypn08FXEKWhD27GRu+7nj0dgQYD7owP8A5stR8bBD9dOtkuB//LxZvnpv4lR/ukGLV7cnx3MooXvoZKI2+aQDcRyMe57d/DcPO34qgOGbiao9NcOGJ5DY6uupIpnSU09I5vO3mPVrg4jp6d0G4mtOo2IacYo645dI2SKp3igogwPkqnbdWhp6beJPQfQtX6LjCitcLbVh+mdNTW+InyUDZj03O56NHivg90Tir66+YdkDI5vsTU2wtiJHvWyl3MQe7ctc36PQv3wf606X6c4FW2zJWS0N3kqnSvqWUhkM7Nhyt5mjfpseh8UFL8QuqN51UyylvF4tENqdS0wp4YWNdvy8xduS7qepK3O4CpHT8PVNFKedrLhUMAPh707ftK1B4pdTIdVNQGX23UE1LaaaAUlE6VmzpWtJJcfa49O7otuuAH7wEf50qP3MQaocW2AS6d6x1T6JjobfcXefUL29A3c7uAPiHKzdd9fKfK+GPHLRS1rHX67gQ3iJjvfRiHo4kd3O4NI9BKvHjW09izTSCrulPFvdLC11ZA4Dq6Mf3jf0fff7VzktdFUXG5U1vpWF89RK2KNoG5LnHYINyvc6sFDKW759WQ++kPmVE4juHV5Ht2HsWwWso3ba/XL/ACKX0hxKnwfTiyYzAwNNJTNExH+qQjd5+klROsvwLZ65f5VV614Gv06wt9B8fb9ekq7RF4WfNJXZgfxSt/zZ/iK+PNcokx+anjjpWzGVpcS5222xX14H8Ubf82f4isS1i/xlB827967vKv3LGm01252mIp/pnuJj28jVKrdyN4mav7Puk1PybF+mVi+UXl98uXnr4GwnkDeUHfsUUi5LI1HJyKPYuVbx6OzxtMxcav27VG0+opLFfjLb/n2qMCk8V+Mlv+fao+N31HnHVIyu4r8p6Ib3Q37w9P8Anun+rlVVe5sfHDK/yCL6xWp7ob94em/PdP8AVyqq/c2Pjhlf5BF9YtPZMpviuPNxCZdv/wB+R+wLodoJZ6Gx6N4pQ0EDIoza4Jn8o25nvYHOcfSSSueHFYNuITLvy937gukOk/3rsU/M1J9S1Bz+44LTRWniAuraGBkLKmCGoe1g2HO5gLj7SrY1LvNbR+5/4lFBI4CtjgppXA9fJiR/T/8AICrbj5/zA1f5DT/wBbB4ngztReBuy45ByisdbjLSEj/msleWj27be1BS/uemM2i9alXa63KnjqJ7VSMfSNkAIa97iC7bxAH7VvzUwQ1NPJT1ETJYZGlr2PG4cD2ghcrNLM5yjRjUZ1zp6Usqqcupq6hqAWiVm/Vh8D03BWyWQ8bVG+xFlhw2qZdXsI5qqdvkY3bdo5ertvDog1o19sdvxvWjJ7La2hlFTV7hEwdjQQHbD0DdbK8Z1zq6bho09tsD3sgrXwGfY9HBlPu1p9p39i1AyO43K7ZBWXS8PkfcKuYzzueNiXOO/Z3Dr9C6Daw6bT6l8Lllt1uZzXa30NNXULf+o9sWzmf7muI9eyDTzh71EzHTyvuVdiGLRXqeojayV7qSSUxN37AWdm6tHK+IjWTJMcuNguGnMTqS4Uz6eZv2MnPvXNIJG/eN9wq64edXLvonl1bHW2qSpoakiK4UTxySsc0/Cbv2OHXoe1X9mnGpYBYZWYjjVwfdZGERvruRsURI7SGkl23h038UFCcLtqyez69YvUmyXSBvnYZK59K9oDCCDuSOxSXHWd+Ie6/ktP8AVhbQ8I2t2QaqUlZb8gsXJVW+MOfcqdvLBKSegI/0u9A6epavcdY24hrp6aWn+rCDZrgf05sNl0ftuVTW+nqLveued9RIwOdHGHlrGN37Ojd/WVsM1rI2bNa1jR16DYKs+FMbcO+F/m4fxuVW8eWqt5xCw0WG2J76Wa9QPfU1bHbObCDyljfAnvPggrjjM4gTf6mp09wur3tUTjHca2J3+KeD1jYR/oB7T3n0LIODPh7MQpNQ82o9nuAktdDK3sHdK8H9g9q1d0ivWKY/nVFe8ytFVeLdSEyikhLR5SQfB5ubtbv1I71tm7jbxpmzIcKunIOgBnjGw9QQbbDoNgih8Jv0GU4hacjpoXwQ3KkjqWRvI5mB7Qdjt39VMICIiAiIgIiII/IrHaMhtUtrvdup7hRSjZ8M7A5pVF5HwiaUXSofPRx3O1F53Laeo3aPUHb7LYREFF4dwraT49WRVkttqrtNGd2+ezFzN/S0dCrvpKeCkpo6alhjhgiaGsjjaGtaB3ABe1EEbk1hs+S2aez323wV9BONpIZm8zT/AEPpVI1nCNpFPXecx0lzp2F3MYY6x3L6h4BbAIgx/J8LxrJsVGMX21w19saxrGxSjct5RsCD2gjxVMR8IGk7bn50W3Z0G+4pjVHl9W/ath0QVTmPD7phlFmtNorLI+lpLS17aVlHMYtg7bm5tvhHoOpWX6Y4LYNOsWZjeNwzRULJXTbSyF7i52253PqCydEFJcaGdMw3RW4U0EvJcL3vQU4B6hrh/aO/R6f7gtVuBXA/ts1ebequHnt+PxiqeSOhmJ2jb6993f7SpzjluOTZjqsLTb7LdJ7ZZYvIRuZTPLHyHq9wIHXuHsWxvBhp9LgmjVJJcKYwXa9SefVTXt2expG0bD6mgHbuLigu1V7rJ8G2euX+VWEq+1kB8nbHbdN5B/CqvWvA1+nWFvoPj7fr0lXS8LygWfNJZdZM5qrXa4KBlDDI2FuwcXHc9d1GZZkM2QTQSS07ITE0tAaSd91CFFMuahkXLXZVVft+HkhW9Oxrd3tqadquPHj7xeB2J3ryoaa8d+yk8V+Mdv8An2/vUYpPFQTklBsP+e1e2N31HnHV4ZXcV+U9Flao4BjupGMfa7k8E01CJ21AEUpjcHtBAO4/GKg9ItGcJ0tq62rxWnq45q2MRzOnqDJu0HcAb9nVWMi09kynM74bdMczyusya80Nea+sfzzmKrcxrjttvsOzsVs2e301ptFHa6JpZTUcDKeFpO5DGNDWjfv6AL6kQVTqhoBp5qNkzsiyOkrn17omxOdDVOY0taNh0Cz7CsatWH4rb8askT4rfQReSga95c4DcnqT29SVMIgrTVLQ3TrUap89v9mDK/bY1dK/yUjvxiO32rEsS4UtKLDdIrhJRVtzkifzsZVzl0e/du0dD7VfCIKYzPhm0syvI6q/XG3VsdZVODpRBVOYzoABs0dB0AVu2igprVaqW20bS2npYWwxAnchrRsOvqC+pEFZanaFab6hVTq6+WQR17vhVVK8xSO/GI7fasAtvB3pXTVflqmW8VkfNuIn1PKPVuButjEQQuGYrj+HWOKy43bILfRR9jIm7cx8Se0n0lYDqdw+6daiZQ/I8ipK51wkjbG90NU5jXBo2HQehWwiCIw3HbZiWLW/G7NG+O32+EQwNe8ucGjxJ7e1Yhq5oxhGqNZRVmVUtXLPRRmOF0FQ6PZpO5B27eqsZEFAt4RdHB20F1P/AN968HhE0dJ3FDdgPDz96v8ARBH41ZqHHsfoLFbGOZRUFOynga53MQxo2G57+gUgiICIiAiIgIiICIiAiIgIiICIiAiIgbBERAWO6g2eS72EtgbzTwO8pGPwunUfQsiXrqp4qamkqJncscbS5x8AF45Fqi9aqor5TD3xr1dm7Tco5xLX1zS1xa4EEHYg9oXgLOL1JZbxUNrqi0VtDBM/lFbHtyuPi5uykm6b0bmhzbpMQRuP7Mf1XCxpF65VMWZiqI9OrQZ1qxapib8TTM+v3jdWoTvVl/c1pPlSb9WP6p9zWj+U5/1Y/qv3+hZv8fvD8f8AQ4H8/tKtEVl/c1o/lOb9WP6p9zWk+U5v1Y/qn6Fm/wAfvB/0OB/P7SrRZlphZZaq6tucjCKen35SR8J3oXuuOO2ay3KGkLK27VbxztpmbNG3p26rNcUutJcKV9PT0popKY8j6cjbkUrTNMinJjtqo3j3fPz5eiHquqzXiz2FM7Ve/wCU/Ln67bJpERdm4YREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAXy3ajbX22oo3O5RMwt38N19SL5VTFUTTPKX6pqmmqKo5wr9lgyiooorHVPp22+J4PlAffFoKz6GMRQsjb2NaAF+kUbGxKMff2ZmfP4RyhJys2vJ2iqIjbeeEbcZ5yIiKUiCIiDFcmtF2F9ivllMbp2x+TfG/vHivfh9nrqOoq7jdHsNXVkFzWdjQsjRQ4wrcXe14/Hb3b/ABTas+7VZ7HaOW2+3HaOO24iIpiEIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIP/Z" alt="StayFinderz">
+    <span class="nav-title">Proposal Builder</span>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn ghost" onclick="showTab('settings')">⚙ Settings</button>
+    <button class="nav-btn" onclick="showTab('new')">+ New Proposal</button>
+  </div>
+</nav>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab active" id="tab-dashboard" onclick="showTab('dashboard')">📊 Dashboard</div>
+  <div class="tab" id="tab-new" onclick="showTab('new')">✨ New Proposal</div>
+  <div class="tab" id="tab-proposals" onclick="showTab('proposals')">📁 All Proposals</div>
+  <div class="tab" id="tab-forex" onclick="showTab('forex')">💱 Forex Rates</div>
+  <div class="tab" id="tab-settings" onclick="showTab('settings')">⚙ Settings</div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="page active" id="page-dashboard">
+  <div class="container">
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total Proposals</div></div>
+      <div class="stat-card"><div class="stat-num" id="statMonth">0</div><div class="stat-label">This Month</div></div>
+      <div class="stat-card"><div class="stat-num" id="statClients">0</div><div class="stat-label">Unique Clients</div></div>
+      <div class="stat-card"><div class="stat-num" id="statRevenue">₹0</div><div class="stat-label">Total Quoted</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🕐</span> Recent Proposals</div>
+      <div id="recentProposals"><div class="text-center text-muted" style="padding:2rem">No proposals yet. Create your first one!</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🚀</span> Quick Start</div>
+      <div class="process-steps">
+        <div class="step"><div class="step-num">1</div><div class="step-label">Upload Supplier Quote</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-label">AI Reads & Extracts</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-label">Set Markup & Client</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-label">Generate Proposal</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-label">Share Link</div></div>
+      </div>
+      <div class="text-center mt-2">
+        <button class="btn btn-primary" onclick="showTab('new')">Start Building →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NEW PROPOSAL ===== -->
+<div class="page" id="page-new">
+  <div class="container">
+
+    <!-- STEP 1: UPLOAD -->
+    <div class="card" id="step1Card">
+      <div class="card-title"><span class="icon">📤</span> Step 1: Upload Supplier Itinerary</div>
+      <div class="alert alert-info">
+        <span>ℹ️</span>
+        <span>Supports <strong>PDF, Word (.docx), Excel (.xlsx), Images, Text files</strong>. The AI will automatically read and extract all itinerary details from any supplier format.</span>
+      </div>
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+        <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.xlsx,.xls,.png,.jpg,.jpeg,.txt,.csv" multiple onchange="handleFiles(event)">
+        <div class="icon-big">📄</div>
+        <h3>Drop supplier quote here or click to browse</h3>
+        <p>PDF • Word • Excel • Images • Text — any supplier format works</p>
+      </div>
+      <div id="fileList" class="mt-2"></div>
+      <div id="uploadedContent" class="hidden mt-2">
+        <div class="alert alert-success"><span>✅</span><span>File uploaded. Click "Extract with AI" to parse the itinerary.</span></div>
+        <button class="btn btn-primary" onclick="extractItinerary()">🤖 Extract Itinerary with AI</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: AI EXTRACTION RESULT -->
+    <div class="card hidden" id="step2Card">
+      <div class="card-title"><span class="icon">🤖</span> Step 2: AI Extracted Data</div>
+      <div id="extractionStatus"></div>
+      <div id="extractedData" class="hidden">
+        <div class="form-row">
+          <div class="form-group"><label>Tour/Package Name</label><input type="text" id="ex_tourName"></div>
+          <div class="form-group"><label>Destination</label><input type="text" id="ex_destination"></div>
+        </div>
+        <div class="form-row three">
+          <div class="form-group"><label>Start Date</label><input type="date" id="ex_startDate"></div>
+          <div class="form-group"><label>End Date</label><input type="date" id="ex_endDate"></div>
+          <div class="form-group"><label>Duration</label><input type="text" id="ex_duration" placeholder="e.g. 6 Days / 5 Nights"></div>
+        </div>
+        <div class="form-row three">
+          <div class="form-group"><label>Adults</label><input type="number" id="ex_adults" min="1" value="2"></div>
+          <div class="form-group"><label>Children</label><input type="number" id="ex_children" min="0" value="0"></div>
+          <div class="form-group"><label>Infants</label><input type="number" id="ex_infants" min="0" value="0"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Supplier Currency</label>
+            <select id="ex_currency">
+              <option value="INR">INR – Indian Rupee</option>
+              <option value="USD">USD – US Dollar</option>
+              <option value="SGD">SGD – Singapore Dollar</option>
+              <option value="THB">THB – Thai Baht</option>
+              <option value="AED">AED – UAE Dirham</option>
+              <option value="EUR">EUR – Euro</option>
+              <option value="GBP">GBP – British Pound</option>
+              <option value="KES">KES – Kenyan Shilling</option>
+              <option value="HKD">HKD – Hong Kong Dollar</option>
+              <option value="MYR">MYR – Malaysian Ringgit</option>
+              <option value="IDR">IDR – Indonesian Rupiah</option>
+              <option value="LKR">LKR – Sri Lankan Rupee</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Supplier Price (per person)</label><input type="number" id="ex_pricePerPerson" placeholder="0.00"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Inclusions</label><textarea id="ex_inclusions" placeholder="What is included..."></textarea></div>
+          <div class="form-group"><label>Exclusions</label><textarea id="ex_exclusions" placeholder="What is not included..."></textarea></div>
+        </div>
+        <div class="form-group"><label>Day-wise Itinerary (JSON – editable)</label>
+          <textarea id="ex_itinerary" style="min-height:150px; font-family:monospace; font-size:0.8rem;" placeholder='[{"day":1,"date":"","destination":"","description":"","accommodation":"","meals":""}]'></textarea>
+        </div>
+        <div class="form-group mt-2"><label>Supplier Notes / T&amp;Cs</label><textarea id="ex_notes"></textarea></div>
+        <div class="btn-group mt-2">
+          <button class="btn btn-primary" onclick="goToStep3()">Continue to Client Details →</button>
+          <button class="btn btn-outline" onclick="extractItinerary()">🔄 Re-extract</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: CLIENT + MARKUP -->
+    <div class="card hidden" id="step3Card">
+      <div class="card-title"><span class="icon">👤</span> Step 3: Client Details & Markup</div>
+
+      <div class="form-row">
+        <div class="form-group"><label>Client Name *</label><input type="text" id="cl_name" placeholder="e.g. Ankita Sharma"></div>
+        <div class="form-group"><label>Client Email</label><input type="email" id="cl_email" placeholder="client@email.com"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Client Phone</label><input type="tel" id="cl_phone" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="form-group"><label>Remarks / Notes</label><input type="text" id="cl_remarks" placeholder="e.g. VIP client, honeymoon trip"></div>
+      </div>
+
+      <hr class="divider">
+      <div class="card-title" style="margin-bottom:0.5rem"><span class="icon">💰</span> Markup Settings</div>
+
+      <div class="markup-tabs">
+        <div class="markup-tab active" onclick="setMarkupType('per_person')" id="mTab_per_person">Per Person</div>
+        <div class="markup-tab" onclick="setMarkupType('package')" id="mTab_package">Package Total</div>
+      </div>
+
+      <div class="markup-sub active" id="markup_per_person">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Markup Type (Per Person)</label>
+            <select id="m_pp_type" onchange="calcFinalPrice()">
+              <option value="amount">Fixed Amount (₹)</option>
+              <option value="percent">Percentage (%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Markup Value</label>
+            <input type="number" id="m_pp_value" placeholder="0" oninput="calcFinalPrice()">
+          </div>
+        </div>
+      </div>
+
+      <div class="markup-sub" id="markup_package">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Markup Type (Package Total)</label>
+            <select id="m_pkg_type" onchange="calcFinalPrice()">
+              <option value="amount">Fixed Amount (₹)</option>
+              <option value="percent">Percentage (%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Markup Value</label>
+            <input type="number" id="m_pkg_value" placeholder="0" oninput="calcFinalPrice()">
+          </div>
+        </div>
+      </div>
+
+      <div id="priceCalcBox" class="alert alert-info hidden" style="margin-top:0.5rem"></div>
+
+      <hr class="divider">
+      <div class="card-title" style="margin-bottom:0.5rem"><span class="icon">📝</span> Proposal Settings</div>
+      <div class="form-row">
+        <div class="form-group"><label>Payment Terms</label><input type="text" id="cl_paymentTerms" placeholder="e.g. 30% advance, 70% before travel" value="30% advance, 70% balance before travel date"></div>
+        <div class="form-group"><label>Validity</label><input type="text" id="cl_validity" placeholder="e.g. Valid for 7 days" value="Valid for 7 days from date of quotation"></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Special Message to Client (optional)</label><textarea id="cl_message" placeholder="Any personalized message..."></textarea></div>
+      </div>
+
+      <div class="btn-group mt-2">
+        <button class="btn btn-primary" onclick="generateProposal()">🚀 Generate Proposal</button>
+        <button class="btn btn-outline" onclick="showCard('step2Card')">← Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: GENERATED -->
+    <div class="card hidden" id="step4Card">
+      <div class="card-title"><span class="icon">✅</span> Step 4: Proposal Generated!</div>
+      <div id="proposalLinkBox"></div>
+      <div class="btn-group mt-2">
+        <button class="btn btn-primary" onclick="previewProposal()">👁 Preview Proposal</button>
+        <button class="btn btn-secondary" onclick="printProposal()">🖨 Print / Save as PDF</button>
+        <button class="btn btn-outline" onclick="resetNew()">+ New Proposal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ALL PROPOSALS ===== -->
+<div class="page" id="page-proposals">
+  <div class="container">
+    <div class="card">
+      <div class="card-title"><span class="icon">📁</span> All Proposals</div>
+      <div class="form-row" style="margin-bottom:1rem">
+        <div class="form-group"><label>Search</label><input type="text" id="searchInput" placeholder="Client name, destination, proposal #..." oninput="renderProposals()"></div>
+        <div class="form-group"><label>Filter</label>
+          <select id="filterSelect" onchange="renderProposals()">
+            <option value="">All</option>
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+          </select>
+        </div>
+      </div>
+      <div id="proposalsList"><div class="text-center text-muted" style="padding:2rem">No proposals found.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOREX ===== -->
+<div class="page" id="page-forex">
+  <div class="container">
+    <div class="card">
+      <div class="card-title"><span class="icon">💱</span> Forex Rates (vs INR)</div>
+      <div class="alert alert-info">
+        <span>ℹ️</span>
+        <span>Enter the exchange rate for each currency. This will be used to automatically convert supplier quotes to INR before applying your markup. Example: 1 USD = 83.50 INR → enter <strong>83.50</strong></span>
+      </div>
+      <table class="forex-table" id="forexTable">
+        <thead><tr><th>Currency</th><th>Code</th><th>Rate (1 unit = ? INR)</th><th>Your Markup %</th></tr></thead>
+        <tbody id="forexBody"></tbody>
+      </table>
+      <div class="btn-group mt-2">
+        <button class="btn btn-primary" onclick="saveForex()">💾 Save Rates</button>
+        <button class="btn btn-outline" onclick="resetForex()">↺ Reset to Defaults</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div class="page" id="page-settings">
+  <div class="container">
+    <div class="card">
+      <div class="card-title"><span class="icon">🏢</span> Company Details</div>
+      <div class="company-logo-box">
+        <img src="data:image/png;base64,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" id="companyLogoPreview" alt="StayFinderz">
+        <div>
+          <div style="font-weight:600;font-size:1rem">StayFinderz</div>
+          <div style="color:var(--muted);font-size:0.85rem" id="companyEmailDisplay">info@stayfinderz.com</div>
+          <div style="color:var(--muted);font-size:0.85rem">GST: 09ABPCS1176C1Z6</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Company Name</label><input type="text" id="s_companyName" value="StayFinderz"></div>
+        <div class="form-group"><label>Tagline</label><input type="text" id="s_tagline" value="Your Gateway to Unforgettable Journeys"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Email</label><input type="email" id="s_email" value="info@stayfinderz.com"></div>
+        <div class="form-group"><label>Phone</label><input type="text" id="s_phone" value=""></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Website</label><input type="text" id="s_website" value="www.stayfinderz.com"></div>
+        <div class="form-group"><label>GST Number</label><input type="text" id="s_gst" value="09ABPCS1176C1Z6"></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Address</label><input type="text" id="s_address" value=""></div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Bank Details (shown on proposals)</label>
+          <textarea id="s_bankDetails" placeholder="Bank Name, Account No, IFSC, Account Holder..."></textarea>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group"><label>Default Terms &amp; Conditions</label>
+          <textarea id="s_tnc" style="min-height:100px">• Rates are subject to availability at time of booking confirmation.
+• All prices are inclusive of GST as applicable.
+• Cancellation charges as per supplier policy.
+• Stayfinderz is not responsible for delays due to weather, strikes, or force majeure.
+• Valid passport required for international travel (minimum 6 months validity).
+• Travel insurance is strongly recommended.</textarea>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="saveSettings()">💾 Save Company Settings</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🎨</span> Proposal Preferences</div>
+      <div class="toggle-row">
+        <div class="toggle-label">Show destination images in proposals<small>AI fetches relevant travel images</small></div>
+        <div class="toggle-switch on" id="toggle_images" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">Show map/route overview<small>Include destination map in proposal</small></div>
+        <div class="toggle-switch on" id="toggle_map" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">Show bank details<small>Include payment bank details in proposal</small></div>
+        <div class="toggle-switch" id="toggle_bank" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">Show GST breakup<small>Show GST 5% + TCS 2% in pricing section</small></div>
+        <div class="toggle-switch" id="toggle_gst" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚠️</span> Data Management</div>
+      <button class="btn btn-danger btn-sm" onclick="if(confirm('Delete all proposals? This cannot be undone.')) { localStorage.clear(); location.reload(); }">🗑 Clear All Data</button>
+      <button class="btn btn-outline btn-sm" onclick="exportData()" style="margin-left:8px">📤 Export Data (JSON)</button>
+    </div>
+  </div>
+</div>
+
+<!-- PREVIEW OVERLAY -->
+<div class="preview-overlay" id="previewOverlay">
+  <div class="preview-container">
+    <div class="preview-header">
+      <span>Proposal Preview</span>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="nav-btn" onclick="printProposal()" style="font-size:0.8rem">🖨 Print / PDF</button>
+        <button class="preview-close" onclick="document.getElementById('previewOverlay').classList.remove('show')">✕</button>
+      </div>
+    </div>
+    <div id="previewContent" style="padding:0"></div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Edit Proposal</h3>
+      <button class="modal-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="modal-body" id="editModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEditModal()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const GEMINI_API_KEY = "PASTE_YOUR_GEMINI_API_KEY_HERE";
+
+// ═══════════════════════════════════════════════════════
+//  GLOBAL STATE
+// ═══════════════════════════════════════════════════════
+const LOGO_URI = "data:image/png;base64,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";
+let uploadedFileContent = null;
+let uploadedFileName = null;
+let uploadedFileBase64 = null;
+let uploadedFileMediaType = null;
+let uploadedFileObject = null;
+let currentExtracted = {};
+let currentMarkupType = 'per_person';
+let currentProposalData = null;
+let editingProposalId = null;
+
+// ═══════════════════════════════════════════════════════
+//  STORAGE HELPERS
+// ═══════════════════════════════════════════════════════
+function getProposals() { try { return JSON.parse(localStorage.getItem('sf_proposals') || '[]'); } catch(e) { return []; } }
+function saveProposals(p) { localStorage.setItem('sf_proposals', JSON.stringify(p)); }
+function getSettings() { try { return JSON.parse(localStorage.getItem('sf_settings') || '{}'); } catch(e) { return {}; } }
+function saveSettings_() { 
+  const s = { companyName: v('s_companyName'), tagline: v('s_tagline'), email: v('s_email'), phone: v('s_phone'), website: v('s_website'), gst: v('s_gst'), address: v('s_address'), bankDetails: v('s_bankDetails'), tnc: v('s_tnc') };
+  localStorage.setItem('sf_settings', JSON.stringify(s));
+}
+function getForex() {
+  const defaults = { USD:83.5, SGD:63.0, THB:2.35, AED:22.7, EUR:90.5, GBP:107.0, KES:0.65, HKD:10.7, MYR:18.5, IDR:0.0055, LKR:0.28, INR:1 };
+  try { return JSON.parse(localStorage.getItem('sf_forex') || JSON.stringify(defaults)); } catch(e) { return defaults; }
+}
+function saveForex_() { 
+  const f = {};
+  document.querySelectorAll('.forex-rate-input').forEach(el => { f[el.dataset.code] = parseFloat(el.value) || 0; });
+  localStorage.setItem('sf_forex', JSON.stringify(f));
+}
+function v(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+
+// ═══════════════════════════════════════════════════════
+//  PROPOSAL NUMBER GENERATOR
+// ═══════════════════════════════════════════════════════
+function generateProposalNum() {
+  const proposals = getProposals();
+  const seq = proposals.length + 1;
+  const yr = new Date().getFullYear();
+  return 'SFZ-' + yr + '-' + String(seq).padStart(4, '0');
+}
+
+// ═══════════════════════════════════════════════════════
+//  TAB NAVIGATION
+// ═══════════════════════════════════════════════════════
+function showTab(tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + tab).classList.add('active');
+  const tabEl = document.getElementById('tab-' + tab);
+  if (tabEl) tabEl.classList.add('active');
+  if (tab === 'proposals') renderProposals();
+  if (tab === 'dashboard') updateDashboard();
+  if (tab === 'forex') renderForex();
+  if (tab === 'settings') loadSettings();
+}
+
+// ═══════════════════════════════════════════════════════
+//  CARD VISIBILITY
+// ═══════════════════════════════════════════════════════
+function showCard(id) {
+  ['step1Card','step2Card','step3Card','step4Card'].forEach(c => {
+    const el = document.getElementById(c);
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById(id);
+  if (target) target.classList.remove('hidden');
+}
+
+// ═══════════════════════════════════════════════════════
+//  FILE HANDLING
+// ═══════════════════════════════════════════════════════
+function handleDragOver(e) { e.preventDefault(); document.getElementById('uploadZone').classList.add('drag'); }
+function handleDragLeave(e) { document.getElementById('uploadZone').classList.remove('drag'); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag');
+  const files = e.dataTransfer.files;
+  if (files.length) processFile(files[0]);
+}
+function handleFiles(e) { if (e.target.files.length) processFile(e.target.files[0]); }
+
+function processFile(file) {
+  uploadedFileName = file.name;
+  uploadedFileObject = file;
+  const iconMap = { pdf: '📕', doc: '📝', docx: '📝', xlsx: '📊', xls: '📊', txt: '📄', csv: '📊', png: '🖼', jpg: '🖼', jpeg: '🖼' };
+  const ext = file.name.split('.').pop().toLowerCase();
+  const icon = iconMap[ext] || '📄';
+  
+  document.getElementById('fileList').innerHTML = `
+    <div class="file-item">
+      <span class="file-icon">${icon}</span>
+      <span class="file-name">${file.name}</span>
+      <span class="file-size">${(file.size/1024).toFixed(1)} KB</span>
+      <button class="remove" onclick="removeFile()">✕</button>
+    </div>`;
+  
+  const reader = new FileReader();
+  if (['txt','csv'].includes(ext)) {
+    reader.onload = e => { uploadedFileContent = e.target.result; uploadedFileBase64 = null; uploadedFileMediaType = null; };
+    reader.readAsText(file);
+  } else if (['png','jpg','jpeg','gif','webp'].includes(ext)) {
+    reader.onload = e => {
+      const dataUrl = e.target.result;
+      uploadedFileBase64 = dataUrl.split(',')[1];
+      uploadedFileMediaType = file.type || 'image/jpeg';
+      uploadedFileContent = null;
+    };
+    reader.readAsDataURL(file);
+  } else if (ext === 'pdf') {
+    reader.onload = e => {
+      const dataUrl = e.target.result;
+      uploadedFileBase64 = dataUrl.split(',')[1];
+      uploadedFileMediaType = 'application/pdf';
+      uploadedFileContent = null;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // DOCX, XLSX, etc. — read as text best-effort, or ArrayBuffer
+    reader.onload = e => {
+      try {
+        // Try to extract readable text from binary
+        const arr = new Uint8Array(e.target.result);
+        let text = '';
+        for (let i = 0; i < Math.min(arr.length, 50000); i++) {
+          const c = arr[i];
+          if ((c >= 32 && c < 127) || c === 10 || c === 13 || c === 9) text += String.fromCharCode(c);
+        }
+        // Clean up — keep only runs of printable chars
+        text = text.replace(/[^\x20-\x7E\n\r\t]/g, ' ').replace(/ {3,}/g, ' ').replace(/\n{3,}/g, '\n\n');
+        uploadedFileContent = text.substring(0, 8000);
+        uploadedFileBase64 = null; uploadedFileMediaType = null;
+      } catch(err) {
+        uploadedFileContent = 'File: ' + file.name;
+        uploadedFileBase64 = null; uploadedFileMediaType = null;
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+  
+  document.getElementById('uploadedContent').classList.remove('hidden');
+}
+
+function removeFile() {
+  document.getElementById('fileList').innerHTML = '';
+  document.getElementById('uploadedContent').classList.add('hidden');
+  uploadedFileContent = null;
+  uploadedFileName = null;
+  uploadedFileBase64 = null;
+  uploadedFileMediaType = null;
+  uploadedFileObject = null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  AI EXTRACTION
+// ═══════════════════════════════════════════════════════
+async function extractItinerary() {
+  if (!uploadedFileName && !uploadedFileContent) {
+    alert('Please upload a supplier quote first.');
+    return;
+  }
+  
+  showCard('step2Card');
+  document.getElementById('extractedData').classList.add('hidden');
+  document.getElementById('extractionStatus').innerHTML = `
+    <div class="loading"><div class="spinner"></div><span>AI is reading your supplier quote and extracting itinerary details...</span></div>`;
+
+  const systemPrompt = `You are a travel industry data extraction expert. Your ONLY job is to read supplier travel quotes and return structured JSON. You MUST return ONLY a raw JSON object — no markdown, no code fences, no explanation, no prose. Start your response with { and end with }. Never say anything else.`;
+
+  const userText = `Extract all travel itinerary details from this supplier quote and return ONLY a JSON object with these exact fields:
+{
+  "tourName": "full tour/package name",
+  "destination": "main destination(s)",
+  "startDate": "YYYY-MM-DD or empty string",
+  "endDate": "YYYY-MM-DD or empty string",
+  "duration": "e.g. 6 Days / 5 Nights",
+  "adults": 2,
+  "children": 0,
+  "infants": 0,
+  "currency": "3-letter code like USD, SGD, THB, AED, INR, KES, HKD",
+  "pricePerPerson": 0,
+  "totalPackagePrice": 0,
+  "inclusions": "semicolon separated list of what is included",
+  "exclusions": "semicolon separated list of what is NOT included",
+  "itinerary": [
+    {"day": 1, "date": "YYYY-MM-DD or empty", "destination": "city/place", "description": "detailed description of activities", "accommodation": "hotel name", "meals": "Breakfast/Lunch/Dinner as applicable"}
+  ],
+  "notes": "cancellation policy, important notes, T&C",
+  "supplierName": "supplier company name"
+}
+
+File name: ${uploadedFileName}
+${uploadedFileContent ? 'File content:\n' + uploadedFileContent.substring(0, 6000) : ''}`;
+
+  // Build message content array - support images and PDFs natively
+  let messageContent = [];
+  if (uploadedFileBase64 && uploadedFileMediaType) {
+    if (uploadedFileMediaType === 'application/pdf') {
+      messageContent.push({ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: uploadedFileBase64 } });
+      messageContent.push({ type: 'text', text: userText });
+    } else if (uploadedFileMediaType.startsWith('image/')) {
+      messageContent.push({ type: 'image', source: { type: 'base64', media_type: uploadedFileMediaType, data: uploadedFileBase64 } });
+      messageContent.push({ type: 'text', text: userText });
+    }
+  } else {
+    messageContent = userText;
+  }
+
+  try {
+    const prompt = systemPrompt + "\n\n" + userText;
+
+    const resp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          contents:[{parts:[{text:prompt}]}],
+          generationConfig:{temperature:0.2}
+        })
+      }
+    );
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error('Gemini API error: ' + errText.substring(0,200));
+    }
+
+    const data = await resp.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+    
+    // Robustly extract JSON — strip any accidental prose/fences
+    let jsonStr = text.trim();
+    jsonStr = jsonStr.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```\s*$/i, '').trim();
+    // Find first { and last }
+    const start = jsonStr.indexOf('{');
+    const end = jsonStr.lastIndexOf('}');
+    if (start === -1 || end === -1) throw new Error('No JSON object found in response: ' + jsonStr.substring(0, 100));
+    jsonStr = jsonStr.slice(start, end + 1);
+    const extracted = JSON.parse(jsonStr);
+    
+    document.getElementById('extractionStatus').innerHTML = '<div class="alert alert-success"><span>✅</span><span>Successfully extracted itinerary details! Review and edit below if needed.</span></div>';
+    
+    // Populate fields
+    document.getElementById('ex_tourName').value = extracted.tourName || '';
+    document.getElementById('ex_destination').value = extracted.destination || '';
+    document.getElementById('ex_startDate').value = extracted.startDate || '';
+    document.getElementById('ex_endDate').value = extracted.endDate || '';
+    document.getElementById('ex_duration').value = extracted.duration || '';
+    document.getElementById('ex_adults').value = extracted.adults || 2;
+    document.getElementById('ex_children').value = extracted.children || 0;
+    document.getElementById('ex_infants').value = extracted.infants || 0;
+    const currSel = document.getElementById('ex_currency');
+    if (extracted.currency) { for(let i=0;i<currSel.options.length;i++) { if(currSel.options[i].value === extracted.currency) { currSel.selectedIndex = i; break; } } }
+    document.getElementById('ex_pricePerPerson').value = extracted.pricePerPerson || extracted.totalPackagePrice || '';
+    document.getElementById('ex_inclusions').value = extracted.inclusions || '';
+    document.getElementById('ex_exclusions').value = extracted.exclusions || '';
+    document.getElementById('ex_itinerary').value = JSON.stringify(extracted.itinerary || [], null, 2);
+    document.getElementById('ex_notes').value = extracted.notes || '';
+    
+    currentExtracted = extracted;
+    document.getElementById('extractedData').classList.remove('hidden');
+    
+  } catch (err) {
+    console.error(err);
+    document.getElementById('extractionStatus').innerHTML = '<div class="alert alert-error"><span>❌</span><span>Could not auto-extract. Please fill in the details manually below.</span></div>';
+    document.getElementById('extractedData').classList.remove('hidden');
+    // Set defaults
+    document.getElementById('ex_itinerary').value = JSON.stringify([{"day":1,"date":"","destination":"","description":"Day 1 – Arrival and check-in","accommodation":"","meals":"Dinner"}], null, 2);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  STEP 3
+// ═══════════════════════════════════════════════════════
+function goToStep3() {
+  if (!v('ex_tourName') && !v('ex_destination')) {
+    alert('Please fill in at least the tour name and destination.');
+    return;
+  }
+  showCard('step3Card');
+  document.getElementById('step3Card').classList.remove('hidden');
+  calcFinalPrice();
+  // Also keep step2 visible for reference
+  document.getElementById('step2Card').classList.remove('hidden');
+}
+
+// ═══════════════════════════════════════════════════════
+//  MARKUP
+// ═══════════════════════════════════════════════════════
+function setMarkupType(type) {
+  currentMarkupType = type;
+  document.querySelectorAll('.markup-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.markup-sub').forEach(s => s.classList.remove('active'));
+  document.getElementById('mTab_' + type).classList.add('active');
+  document.getElementById('markup_' + type).classList.add('active');
+  calcFinalPrice();
+}
+
+function calcFinalPrice() {
+  const currency = v('ex_currency');
+  const supplierPrice = parseFloat(v('ex_pricePerPerson')) || 0;
+  const adults = parseInt(v('ex_adults')) || 2;
+  const children = parseInt(v('ex_children')) || 0;
+  
+  if (!supplierPrice) { document.getElementById('priceCalcBox').classList.add('hidden'); return; }
+  
+  const forex = getForex();
+  const rate = (currency === 'INR') ? 1 : (forex[currency] || 1);
+  const supplierINR = supplierPrice * rate;
+  
+  let markupAmt = 0;
+  let markupLabel = '';
+  
+  if (currentMarkupType === 'per_person') {
+    const mType = v('m_pp_type');
+    const mVal = parseFloat(v('m_pp_value')) || 0;
+    if (mType === 'percent') { markupAmt = supplierINR * mVal / 100; markupLabel = mVal + '% per person'; }
+    else { markupAmt = mVal; markupLabel = '₹' + mVal + ' per person'; }
+  } else {
+    const mType = v('m_pkg_type');
+    const mVal = parseFloat(v('m_pkg_value')) || 0;
+    const totalPax = adults + children;
+    if (mType === 'percent') { markupAmt = supplierINR * mVal / 100; markupLabel = mVal + '% on package total'; }
+    else { markupAmt = totalPax > 0 ? mVal / totalPax : 0; markupLabel = '₹' + mVal + ' on package total'; }
+  }
+  
+  const finalPP = supplierINR + markupAmt;
+  const totalPax = adults + (children * 0.5);
+  const totalPkg = finalPP * (adults + children);
+  
+  const html = `<span>
+    <strong>Supplier:</strong> ${currency} ${supplierPrice.toLocaleString()} 
+    ${currency !== 'INR' ? '× ' + rate + ' = ₹' + supplierINR.toLocaleString('en-IN', {maximumFractionDigits:0}) : ''}
+    &nbsp;|&nbsp; <strong>Markup:</strong> ₹${markupAmt.toLocaleString('en-IN', {maximumFractionDigits:0})} (${markupLabel})
+    &nbsp;|&nbsp; <strong>Final per person: ₹${Math.round(finalPP).toLocaleString('en-IN')}</strong>
+    &nbsp;|&nbsp; <strong>Total (${adults+children} pax): ₹${Math.round(totalPkg).toLocaleString('en-IN')}</strong>
+  </span>`;
+  
+  document.getElementById('priceCalcBox').classList.remove('hidden');
+  document.getElementById('priceCalcBox').innerHTML = '💰 ' + html;
+}
+
+// ═══════════════════════════════════════════════════════
+//  GENERATE PROPOSAL
+// ═══════════════════════════════════════════════════════
+async function generateProposal() {
+  const clientName = v('cl_name');
+  if (!clientName) { alert('Please enter client name.'); return; }
+  
+  const currency = v('ex_currency');
+  const supplierPP = parseFloat(v('ex_pricePerPerson')) || 0;
+  const adults = parseInt(v('ex_adults')) || 2;
+  const children = parseInt(v('ex_children')) || 0;
+  const forex = getForex();
+  const rate = (currency === 'INR') ? 1 : (forex[currency] || 1);
+  const supplierINR = supplierPP * rate;
+  
+  let markupAmt = 0;
+  if (currentMarkupType === 'per_person') {
+    const mType = v('m_pp_type'); const mVal = parseFloat(v('m_pp_value')) || 0;
+    markupAmt = (mType === 'percent') ? supplierINR * mVal / 100 : mVal;
+  } else {
+    const mType = v('m_pkg_type'); const mVal = parseFloat(v('m_pkg_value')) || 0; const tp = adults + children;
+    markupAmt = (mType === 'percent') ? supplierINR * mVal / 100 : (tp > 0 ? mVal/tp : 0);
+  }
+  
+  const finalPP = Math.round(supplierINR + markupAmt);
+  const totalPkg = finalPP * (adults + children);
+  
+  let itinerary = [];
+  try { itinerary = JSON.parse(v('ex_itinerary') || '[]'); } catch(e) {}
+  
+  const settings = getSettings();
+  const proposalNum = editingProposalId ? null : generateProposalNum();
+  
+  const proposal = {
+    id: editingProposalId || Date.now().toString(),
+    proposalNum: editingProposalId ? (getProposals().find(p=>p.id===editingProposalId)||{}).proposalNum : proposalNum,
+    version: 1,
+    clientName: clientName,
+    clientEmail: v('cl_email'),
+    clientPhone: v('cl_phone'),
+    remarks: v('cl_remarks'),
+    tourName: v('ex_tourName'),
+    destination: v('ex_destination'),
+    startDate: v('ex_startDate'),
+    endDate: v('ex_endDate'),
+    duration: v('ex_duration'),
+    adults: adults,
+    children: children,
+    infants: parseInt(v('ex_infants')) || 0,
+    supplierCurrency: currency,
+    supplierPP: supplierPP,
+    supplierINR: supplierINR,
+    markupPP: markupAmt,
+    finalPP: finalPP,
+    totalPackage: totalPkg,
+    inclusions: v('ex_inclusions'),
+    exclusions: v('ex_exclusions'),
+    itinerary: itinerary,
+    notes: v('ex_notes'),
+    paymentTerms: v('cl_paymentTerms'),
+    validity: v('cl_validity'),
+    message: v('cl_message'),
+    createdAt: new Date().toISOString(),
+    uploadedFile: uploadedFileName || 'Manual entry',
+    versions: []
+  };
+  
+  // Handle edit (version increment)
+  if (editingProposalId) {
+    const proposals = getProposals();
+    const idx = proposals.findIndex(p => p.id === editingProposalId);
+    if (idx >= 0) {
+      proposal.version = (proposals[idx].version || 1) + 1;
+      proposal.versions = [...(proposals[idx].versions || []), { version: proposals[idx].version, createdAt: proposals[idx].createdAt, totalPackage: proposals[idx].totalPackage }];
+      proposals[idx] = proposal;
+      saveProposals(proposals);
+    }
+    editingProposalId = null;
+  } else {
+    const proposals = getProposals();
+    proposals.unshift(proposal);
+    saveProposals(proposals);
+  }
+  
+  currentProposalData = proposal;
+  
+  // Show result
+  showCard('step4Card');
+  document.getElementById('step4Card').classList.remove('hidden');
+  document.getElementById('step2Card').classList.add('hidden');
+  document.getElementById('step3Card').classList.add('hidden');
+  
+  const shareUrl = window.location.href.split('?')[0] + '?proposal=' + proposal.id;
+  document.getElementById('proposalLinkBox').innerHTML = `
+    <div class="alert alert-success"><span>🎉</span><span>Proposal <strong>${proposal.proposalNum}</strong> for <strong>${clientName}</strong> has been generated!</span></div>
+    <div class="link-box">
+      <input type="text" value="${shareUrl}" id="shareLink" readonly>
+      <button class="copy-btn" onclick="copyLink()">Copy</button>
+    </div>
+    <div class="alert alert-warning"><span>📌</span><span>Total Package Price: <strong>₹${totalPkg.toLocaleString('en-IN')}</strong> for ${adults + children} pax (₹${finalPP.toLocaleString('en-IN')} per person)</span></div>`;
+}
+
+function copyLink() {
+  const el = document.getElementById('shareLink');
+  el.select(); document.execCommand('copy');
+  const btn = el.nextElementSibling;
+  btn.textContent = '✓ Copied!'; btn.style.background = 'var(--green)';
+  setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = 'var(--orange)'; }, 2000);
+}
+
+// ═══════════════════════════════════════════════════════
+//  PREVIEW / PRINT
+// ═══════════════════════════════════════════════════════
+function previewProposal(proposalId) {
+  let proposal = currentProposalData;
+  if (proposalId) {
+    proposal = getProposals().find(p => p.id === proposalId);
+    currentProposalData = proposal;
+  }
+  if (!proposal) return;
+  
+  const settings = getSettings();
+  document.getElementById('previewContent').innerHTML = buildProposalHTML(proposal, settings);
+  document.getElementById('previewOverlay').classList.add('show');
+}
+
+function printProposal() {
+  if (!currentProposalData) return;
+  const settings = getSettings();
+  const html = buildProposalHTML(currentProposalData, settings);
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head>
+    <meta charset="UTF-8">
+    <title>Proposal - ${currentProposalData.proposalNum}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; color: #333; }
+    :root { --orange: #F47820; --dark: #1A1A2E; --mid: #2D2D44; --border: #E8E8E8; }
+    ${getDocStyles()}
+    @media print { .no-print { display:none !important; } }
+    </style>
+    </head><body>${html}</body></html>`);
+  win.document.close();
+  setTimeout(() => win.print(), 800);
+}
+
+function getDocStyles() {
+  return `
+    .doc-header { background: linear-gradient(135deg, #1A1A2E 0%, #2D2D44 100%); color: white; padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .doc-logo { height: 50px; }
+    .doc-proposal-num { font-size: 0.8rem; opacity: 0.7; text-align: right; }
+    .doc-proposal-num strong { color: #F47820; font-size: 1rem; display: block; }
+    .doc-hero { background: linear-gradient(135deg, #F47820 0%, #C56E00 100%); color: white; padding: 2.5rem; }
+    .doc-hero h1 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.5rem; }
+    .doc-hero .subtitle { opacity: 0.9; }
+    .doc-meta-bar { background: #F5F6FA; padding: 1rem 2.5rem; display: flex; gap: 2rem; border-bottom: 1px solid #E8E8E8; flex-wrap: wrap; }
+    .doc-meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .doc-meta-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #777; font-weight: 600; }
+    .doc-meta-value { font-weight: 600; color: #1A1A2E; font-size: 0.9rem; }
+    .doc-body { padding: 2rem 2.5rem; }
+    .doc-section { margin-bottom: 2rem; }
+    .doc-section-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #1A1A2E; border-left: 4px solid #F47820; padding-left: 12px; margin-bottom: 1rem; }
+    .doc-greeting { background: #FFF3E8; border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem; }
+    .doc-greeting p { line-height: 1.7; margin-bottom: 0.5rem; }
+    .itinerary-day { margin-bottom: 1.5rem; border: 1px solid #E8E8E8; border-radius: 10px; overflow: hidden; }
+    .day-header { background: #1A1A2E; color: white; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+    .day-badge { background: #F47820; color: white; font-weight: 700; font-size: 0.85rem; padding: 3px 10px; border-radius: 12px; }
+    .day-destination { font-weight: 600; }
+    .day-date { font-size: 0.82rem; opacity: 0.7; margin-left: auto; }
+    .day-body { padding: 1rem 1.5rem; }
+    .day-body p { line-height: 1.7; color: #444; font-size: 0.92rem; }
+    .day-info { display: flex; gap: 1rem; margin-top: 0.8rem; flex-wrap: wrap; }
+    .day-info-item { background: #F5F6FA; padding: 6px 12px; border-radius: 6px; font-size: 0.82rem; }
+    .day-info-item strong { color: #F47820; }
+    .pricing-box { background: linear-gradient(135deg, #1A1A2E 0%, #2D2D44 100%); color: white; border-radius: 12px; padding: 2rem; margin: 2rem 0; }
+    .pricing-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 1rem; color: #F47820; }
+    .price-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
+    .price-row.total { border-bottom: none; padding-top: 12px; font-size: 1.2rem; font-weight: 700; color: #F47820; }
+    .inc-exc { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .inc-box { background: #EAFAF1; padding: 1rem; border-radius: 8px; }
+    .exc-box { background: #FDEDEC; padding: 1rem; border-radius: 8px; }
+    .inc-box h4 { color: #186A3B; font-size: 0.85rem; margin-bottom: 0.6rem; text-transform: uppercase; }
+    .exc-box h4 { color: #922B21; font-size: 0.85rem; margin-bottom: 0.6rem; text-transform: uppercase; }
+    .inc-box li, .exc-box li { font-size: 0.85rem; margin-bottom: 3px; margin-left: 1rem; }
+    .doc-footer { background: #1A1A2E; color: white; padding: 1.5rem 2.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .doc-footer-info { font-size: 0.82rem; opacity: 0.8; }
+    .doc-footer-gst { font-size: 0.75rem; opacity: 0.5; margin-top: 3px; }
+    .doc-tnc { font-size: 0.82rem; color: #777; line-height: 1.6; background: #F5F6FA; padding: 1rem 1.5rem; border-radius: 8px; }
+    .notes-box { background: #FEF9E7; border: 1px solid #F1C40F; border-radius: 8px; padding: 1rem 1.5rem; margin: 1rem 0; }
+    ul { margin-left: 1.2rem; }
+    li { margin-bottom: 3px; }
+  `;
+}
+
+function buildProposalHTML(p, settings) {
+  const s = settings || {};
+  const companyName = s.companyName || 'StayFinderz';
+  const email = s.email || 'info@stayfinderz.com';
+  const gst = s.gst || '09ABPCS1176C1Z6';
+  const phone = s.phone || '';
+  const website = s.website || 'www.stayfinderz.com';
+  const tnc = s.tnc || 'Rates subject to availability at time of booking.';
+  const tagline = s.tagline || 'Your Gateway to Unforgettable Journeys';
+  const bankDetails = s.bankDetails || '';
+  
+  const fmt = n => Math.round(n).toLocaleString('en-IN');
+  const fmtDate = d => { if (!d) return '—'; try { return new Date(d).toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'}); } catch(e) { return d; } };
+  
+  // Build itinerary HTML
+  let itineraryHTML = '';
+  if (p.itinerary && p.itinerary.length > 0) {
+    p.itinerary.forEach(day => {
+      itineraryHTML += `
+        <div class="itinerary-day">
+          <div class="day-header">
+            <span class="day-badge">Day ${day.day}</span>
+            <span class="day-destination">${day.destination || 'In Transit'}</span>
+            ${day.date ? '<span class="day-date">' + fmtDate(day.date) + '</span>' : ''}
+          </div>
+          <div class="day-body">
+            <p>${day.description || 'Enjoy the day as per program.'}</p>
+            <div class="day-info">
+              ${day.accommodation ? '<span class="day-info-item"><strong>🏨 Stay:</strong> ' + day.accommodation + '</span>' : ''}
+              ${day.meals ? '<span class="day-info-item"><strong>🍽 Meals:</strong> ' + day.meals + '</span>' : ''}
+            </div>
+          </div>
+        </div>`;
+    });
+  }
+
+  // Build inclusions/exclusions
+  const incList = (p.inclusions || 'All accommodation as per itinerary\nAll transfers and sightseeing\nMeals as specified\nEntry tickets for all mentioned attractions').split(/[\n,]+/).filter(x=>x.trim()).map(x => '<li>' + x.trim() + '</li>').join('');
+  const excList = (p.exclusions || 'International flights\nPersonal expenses\nTips and gratuities\nVisa fees\nTravel insurance').split(/[\n,]+/).filter(x=>x.trim()).map(x => '<li>' + x.trim() + '</li>').join('');
+
+  // Pricing
+  const pax = p.adults + p.children;
+  const gstAmt = Math.round(p.totalPackage * 0.05);
+  const tcsAmt = Math.round(p.totalPackage * 0.02);
+  
+  const showGst = document.getElementById('toggle_gst') ? document.getElementById('toggle_gst').classList.contains('on') : false;
+  const showBank = document.getElementById('toggle_bank') ? document.getElementById('toggle_bank').classList.contains('on') : false;
+
+  const greetingMsg = p.message || `We are delighted to present this exclusive travel proposal crafted especially for you. Our team has put together the best possible experience to make your journey truly memorable.`;
+
+  return `<div class="doc">
+    <div class="doc-header">
+      <img src="${LOGO_URI}" class="doc-logo" alt="${companyName}">
+      <div class="doc-proposal-num">
+        <span>${tagline}</span>
+        <strong>${p.proposalNum}</strong>
+        v${p.version || 1} • ${new Date(p.createdAt).toLocaleDateString('en-IN')}
+      </div>
+    </div>
+    
+    <div class="doc-hero">
+      <h1>${p.tourName || p.destination}</h1>
+      <p class="subtitle">✈ A Personalized Travel Proposal for ${p.clientName}</p>
+    </div>
+    
+    <div class="doc-meta-bar">
+      <div class="doc-meta-item"><div class="doc-meta-label">Duration</div><div class="doc-meta-value">${p.duration || '—'}</div></div>
+      <div class="doc-meta-item"><div class="doc-meta-label">Travelers</div><div class="doc-meta-value">${p.adults} Adults${p.children ? ', ' + p.children + ' Child' : ''}${p.infants ? ', ' + p.infants + ' Infant' : ''}</div></div>
+      <div class="doc-meta-item"><div class="doc-meta-label">Departure</div><div class="doc-meta-value">${fmtDate(p.startDate)}</div></div>
+      <div class="doc-meta-item"><div class="doc-meta-label">Return</div><div class="doc-meta-value">${fmtDate(p.endDate)}</div></div>
+      <div class="doc-meta-item"><div class="doc-meta-label">Destination</div><div class="doc-meta-value">${p.destination}</div></div>
+    </div>
+    
+    <div class="doc-body">
+      <div class="doc-greeting">
+        <p>Dear <strong>${p.clientName}</strong>,</p>
+        <p>${greetingMsg}</p>
+        <p>We look forward to making your trip exceptional. Please review the itinerary below and feel free to reach out with any questions.</p>
+        <p style="margin-top:0.8rem;font-size:0.88rem;color:#888">Prepared by: <strong>${companyName}</strong> • ${email}${phone ? ' • ' + phone : ''}</p>
+      </div>
+
+      ${itineraryHTML ? `<div class="doc-section"><div class="doc-section-title">📅 Day-wise Itinerary</div>${itineraryHTML}</div>` : ''}
+      
+      <div class="doc-section">
+        <div class="doc-section-title">✅ Inclusions &amp; Exclusions</div>
+        <div class="inc-exc">
+          <div class="inc-box"><h4>✓ What's Included</h4><ul>${incList}</ul></div>
+          <div class="exc-box"><h4>✗ Not Included</h4><ul>${excList}</ul></div>
+        </div>
+      </div>
+
+      <div class="pricing-box">
+        <h3>💰 Package Pricing</h3>
+        <div class="price-row"><span>Package Price (per person)</span><span>₹${fmt(p.finalPP)}</span></div>
+        <div class="price-row"><span>No. of Adults</span><span>${p.adults}</span></div>
+        ${p.children ? '<div class="price-row"><span>No. of Children</span><span>' + p.children + '</span></div>' : ''}
+        ${showGst ? '<div class="price-row"><span>GST @ 5%</span><span>₹' + fmt(gstAmt) + '</span></div>' : ''}
+        ${showGst ? '<div class="price-row"><span>TCS @ 2% (claimable)</span><span>₹' + fmt(tcsAmt) + '</span></div>' : ''}
+        <div class="price-row total"><span>Total Package Cost</span><span>₹${fmt(showGst ? p.totalPackage + gstAmt + tcsAmt : p.totalPackage)}</span></div>
+      </div>
+      
+      <div class="doc-section">
+        <div class="doc-section-title">💳 Payment Terms</div>
+        <p style="line-height:1.7">${p.paymentTerms || '30% advance, 70% balance before travel date'}</p>
+        ${showBank && bankDetails ? '<div class="notes-box" style="margin-top:1rem"><h4>Bank Details</h4><p>' + bankDetails.replace(/\n/g,'<br>') + '</p></div>' : ''}
+        <p style="margin-top:0.5rem;font-size:0.85rem;color:#888">⏱ <em>${p.validity || 'Valid for 7 days from date of quotation'}</em></p>
+      </div>
+      
+      ${p.notes ? `<div class="doc-section"><div class="doc-section-title">📌 Important Notes</div><div class="notes-box"><p style="white-space:pre-line;font-size:0.85rem">${p.notes}</p></div></div>` : ''}
+      
+      <div class="doc-section">
+        <div class="doc-section-title">📋 Terms &amp; Conditions</div>
+        <div class="doc-tnc"><pre style="font-family:inherit;white-space:pre-wrap">${tnc}</pre></div>
+      </div>
+    </div>
+    
+    <div class="doc-footer">
+      <div>
+        <img src="${LOGO_URI}" style="height:36px" alt="${companyName}">
+        <div class="doc-footer-info" style="margin-top:6px">${email}${phone ? ' • ' + phone : ''} • ${website}</div>
+        <div class="doc-footer-gst">GST: ${gst}</div>
+      </div>
+      <div style="text-align:right;font-size:0.82rem;opacity:0.6">
+        <div>Proposal Ref: ${p.proposalNum}</div>
+        <div>Generated: ${new Date(p.createdAt).toLocaleDateString('en-IN')}</div>
+        <div style="margin-top:4px;font-size:0.7rem">Powered by StayFinderz Proposal Builder</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════════════
+function updateDashboard() {
+  const proposals = getProposals();
+  const now = new Date();
+  const thisMonth = proposals.filter(p => {
+    const d = new Date(p.createdAt);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  });
+  const clients = [...new Set(proposals.map(p => p.clientEmail || p.clientName).filter(Boolean))].length;
+  const totalRevenue = proposals.reduce((sum, p) => sum + (p.totalPackage || 0), 0);
+  
+  document.getElementById('statTotal').textContent = proposals.length;
+  document.getElementById('statMonth').textContent = thisMonth.length;
+  document.getElementById('statClients').textContent = clients;
+  document.getElementById('statRevenue').textContent = '₹' + Math.round(totalRevenue).toLocaleString('en-IN', {notation:'compact',maximumFractionDigits:1});
+  
+  // Recent proposals
+  const recent = proposals.slice(0, 5);
+  if (recent.length === 0) {
+    document.getElementById('recentProposals').innerHTML = '<div class="text-center text-muted" style="padding:2rem">No proposals yet. Create your first one!</div>';
+    return;
+  }
+  document.getElementById('recentProposals').innerHTML = recent.map(p => proposalCardHTML(p)).join('');
+}
+
+function proposalCardHTML(p) {
+  return `<div class="proposal-card">
+    <div class="proposal-card-header">
+      <div>
+        <span class="proposal-num">${p.proposalNum}</span>
+        <span class="proposal-client" style="margin-left:8px">${p.clientName}</span>
+        ${p.version > 1 ? '<span class="badge badge-blue" style="margin-left:4px">v' + p.version + '</span>' : ''}
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm" onclick="previewProposal('${p.id}')">👁 View</button>
+        <button class="btn btn-sm" style="background:var(--blue);color:white" onclick="editProposal('${p.id}')">✏ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteProposal('${p.id}')">🗑</button>
+      </div>
+    </div>
+    <div class="proposal-dest">✈ ${p.destination} · ${p.duration || ''}</div>
+    <div class="proposal-meta">
+      <span>👤 ${p.adults + p.children} pax</span>
+      <span>💰 ₹${Math.round(p.totalPackage || 0).toLocaleString('en-IN')}</span>
+      <span>📅 ${new Date(p.createdAt).toLocaleDateString('en-IN')}</span>
+      ${p.remarks ? '<span>📝 ' + p.remarks + '</span>' : ''}
+      ${p.versions && p.versions.length > 0 ? '<span class="badge badge-orange">' + (p.versions.length+1) + ' versions</span>' : ''}
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  PROPOSALS LIST
+// ═══════════════════════════════════════════════════════
+function renderProposals() {
+  let proposals = getProposals();
+  const search = (v('searchInput') || '').toLowerCase();
+  const filter = v('filterSelect');
+  const now = new Date();
+  
+  if (search) {
+    proposals = proposals.filter(p =>
+      (p.clientName || '').toLowerCase().includes(search) ||
+      (p.destination || '').toLowerCase().includes(search) ||
+      (p.proposalNum || '').toLowerCase().includes(search) ||
+      (p.remarks || '').toLowerCase().includes(search)
+    );
+  }
+  
+  if (filter === 'today') {
+    proposals = proposals.filter(p => { const d = new Date(p.createdAt); return d.toDateString() === now.toDateString(); });
+  } else if (filter === 'week') {
+    const weekAgo = new Date(now - 7*24*60*60*1000);
+    proposals = proposals.filter(p => new Date(p.createdAt) >= weekAgo);
+  } else if (filter === 'month') {
+    proposals = proposals.filter(p => { const d = new Date(p.createdAt); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); });
+  }
+  
+  if (proposals.length === 0) {
+    document.getElementById('proposalsList').innerHTML = '<div class="text-center text-muted" style="padding:2rem">No proposals found.</div>';
+    return;
+  }
+  document.getElementById('proposalsList').innerHTML = proposals.map(p => proposalCardHTML(p)).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+//  EDIT PROPOSAL
+// ═══════════════════════════════════════════════════════
+function editProposal(id) {
+  const proposals = getProposals();
+  const p = proposals.find(x => x.id === id);
+  if (!p) return;
+  
+  editingProposalId = id;
+  currentProposalData = p;
+  
+  // Load data into form
+  showTab('new');
+  showCard('step1Card');
+  document.getElementById('step1Card').classList.remove('hidden');
+  document.getElementById('step2Card').classList.remove('hidden');
+  document.getElementById('step3Card').classList.remove('hidden');
+  document.getElementById('step4Card').classList.add('hidden');
+  
+  // Populate step 2
+  document.getElementById('ex_tourName').value = p.tourName || '';
+  document.getElementById('ex_destination').value = p.destination || '';
+  document.getElementById('ex_startDate').value = p.startDate || '';
+  document.getElementById('ex_endDate').value = p.endDate || '';
+  document.getElementById('ex_duration').value = p.duration || '';
+  document.getElementById('ex_adults').value = p.adults || 2;
+  document.getElementById('ex_children').value = p.children || 0;
+  document.getElementById('ex_infants').value = p.infants || 0;
+  document.getElementById('ex_pricePerPerson').value = p.supplierPP || '';
+  document.getElementById('ex_inclusions').value = p.inclusions || '';
+  document.getElementById('ex_exclusions').value = p.exclusions || '';
+  document.getElementById('ex_itinerary').value = JSON.stringify(p.itinerary || [], null, 2);
+  document.getElementById('ex_notes').value = p.notes || '';
+  document.getElementById('extractedData').classList.remove('hidden');
+  document.getElementById('extractionStatus').innerHTML = '<div class="alert alert-warning"><span>✏️</span><span>Editing existing proposal <strong>' + p.proposalNum + '</strong> – v' + (p.version||1) + '. Saving will create v' + ((p.version||1)+1) + '.</span></div>';
+  
+  // Populate step 3
+  document.getElementById('cl_name').value = p.clientName || '';
+  document.getElementById('cl_email').value = p.clientEmail || '';
+  document.getElementById('cl_phone').value = p.clientPhone || '';
+  document.getElementById('cl_remarks').value = p.remarks || '';
+  document.getElementById('cl_paymentTerms').value = p.paymentTerms || '';
+  document.getElementById('cl_validity').value = p.validity || '';
+  document.getElementById('cl_message').value = p.message || '';
+}
+
+function deleteProposal(id) {
+  if (!confirm('Delete this proposal?')) return;
+  const proposals = getProposals().filter(p => p.id !== id);
+  saveProposals(proposals);
+  renderProposals();
+  updateDashboard();
+}
+
+function closeEditModal() { document.getElementById('editModal').classList.remove('show'); }
+function saveEditModal() { closeEditModal(); generateProposal(); }
+
+// ═══════════════════════════════════════════════════════
+//  FOREX
+// ═══════════════════════════════════════════════════════
+const CURRENCIES = [
+  { code: 'USD', name: 'US Dollar', flag: '🇺🇸' },
+  { code: 'SGD', name: 'Singapore Dollar', flag: '🇸🇬' },
+  { code: 'THB', name: 'Thai Baht', flag: '🇹🇭' },
+  { code: 'AED', name: 'UAE Dirham', flag: '🇦🇪' },
+  { code: 'EUR', name: 'Euro', flag: '🇪🇺' },
+  { code: 'GBP', name: 'British Pound', flag: '🇬🇧' },
+  { code: 'KES', name: 'Kenyan Shilling', flag: '🇰🇪' },
+  { code: 'HKD', name: 'Hong Kong Dollar', flag: '🇭🇰' },
+  { code: 'MYR', name: 'Malaysian Ringgit', flag: '🇲🇾' },
+  { code: 'IDR', name: 'Indonesian Rupiah', flag: '🇮🇩' },
+  { code: 'LKR', name: 'Sri Lankan Rupee', flag: '🇱🇰' },
+  { code: 'MOP', name: 'Macau Pataca', flag: '🇲🇴' },
+];
+
+function renderForex() {
+  const forex = getForex();
+  const savedMarkups = JSON.parse(localStorage.getItem('sf_forex_markups') || '{}');
+  
+  document.getElementById('forexBody').innerHTML = CURRENCIES.map(c => `
+    <tr>
+      <td>${c.flag} ${c.name}</td>
+      <td><strong>${c.code}</strong></td>
+      <td><input class="forex-rate-input" data-code="${c.code}" type="number" step="0.01" value="${forex[c.code] || 0}" placeholder="Rate in INR"></td>
+      <td><input class="forex-markup-input" data-code="${c.code}" type="number" step="0.1" value="${savedMarkups[c.code] || 0}" placeholder="0"></td>
+    </tr>`).join('');
+}
+
+function saveForex() {
+  const f = {}; const m = {};
+  document.querySelectorAll('.forex-rate-input').forEach(el => { f[el.dataset.code] = parseFloat(el.value) || 0; });
+  document.querySelectorAll('.forex-markup-input').forEach(el => { m[el.dataset.code] = parseFloat(el.value) || 0; });
+  localStorage.setItem('sf_forex', JSON.stringify(f));
+  localStorage.setItem('sf_forex_markups', JSON.stringify(m));
+  alert('✅ Forex rates saved!');
+}
+
+function resetForex() {
+  const defaults = { USD:83.5, SGD:63.0, THB:2.35, AED:22.7, EUR:90.5, GBP:107.0, KES:0.65, HKD:10.7, MYR:18.5, IDR:0.0055, LKR:0.28, MOP:10.4 };
+  localStorage.setItem('sf_forex', JSON.stringify(defaults));
+  renderForex();
+}
+
+// ═══════════════════════════════════════════════════════
+//  SETTINGS
+// ═══════════════════════════════════════════════════════
+function loadSettings() {
+  const s = getSettings();
+  if (s.companyName) document.getElementById('s_companyName').value = s.companyName;
+  if (s.tagline) document.getElementById('s_tagline').value = s.tagline;
+  if (s.email) document.getElementById('s_email').value = s.email;
+  if (s.phone) document.getElementById('s_phone').value = s.phone;
+  if (s.website) document.getElementById('s_website').value = s.website;
+  if (s.gst) document.getElementById('s_gst').value = s.gst;
+  if (s.address) document.getElementById('s_address').value = s.address;
+  if (s.bankDetails) document.getElementById('s_bankDetails').value = s.bankDetails;
+  if (s.tnc) document.getElementById('s_tnc').value = s.tnc;
+}
+
+function saveSettings() {
+  saveSettings_();
+  document.getElementById('companyEmailDisplay').textContent = v('s_email');
+  alert('✅ Settings saved!');
+}
+
+function exportData() {
+  const data = { proposals: getProposals(), settings: getSettings(), forex: getForex() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'stayfinderz_data_' + new Date().toISOString().slice(0,10) + '.json'; a.click();
+}
+
+function resetNew() {
+  showCard('step1Card');
+  document.getElementById('step1Card').classList.remove('hidden');
+  document.getElementById('step2Card').classList.add('hidden');
+  document.getElementById('step3Card').classList.add('hidden');
+  document.getElementById('step4Card').classList.add('hidden');
+  document.getElementById('fileList').innerHTML = '';
+  document.getElementById('uploadedContent').classList.add('hidden');
+  uploadedFileContent = null; uploadedFileName = null; currentProposalData = null; editingProposalId = null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  updateDashboard();
+  
+  // Check if there's a proposal URL param
+  const params = new URLSearchParams(window.location.search);
+  const proposalId = params.get('proposal');
+  if (proposalId) {
+    const proposals = getProposals();
+    const p = proposals.find(x => x.id === proposalId);
+    if (p) { currentProposalData = p; previewProposal(proposalId); }
+  }
+});
+</script>
+</body>
+</html>
