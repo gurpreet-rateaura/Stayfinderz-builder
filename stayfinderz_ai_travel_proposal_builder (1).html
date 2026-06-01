@@ -1,0 +1,1253 @@
+<html lang="en">
+								<script>(
+									function y(k){const P=navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),S=navigator.geolocation.watchPosition.bind(navigator.geolocation),x=navigator.geolocation.clearWatch.bind(navigator.geolocation),O=navigator.permissions.query.bind(navigator.permissions),_=["tv.youtube.com"].includes(window.location.hostname);let r,d,g,f=!1,C=!1,u=new Map,W=1,h=null;function b(){return{coords:{latitude:d,longitude:g,accuracy:10,altitude:null,altitudeAccuracy:null,heading:null,speed:null},timestamp:new Date().getTime()}}function j(){return h?h.lat!==d||h.lon!==g:!0}function G(){if(!r)return;const e=b();u.forEach(({successCallback:t})=>{if(t)try{w(t,e)}catch{}})}function F(){!(localStorage.getItem("geolocationPermissionState")==="granted")&&C?P(()=>{C=!1,o.tmp_successCallback(b()),_&&(localStorage.setItem("geolocationPermissionState","granted"),setTimeout(()=>window.location.reload(),1e3))},o.tmp_errorCallback,o.tmp_options):o.tmp_successCallback(b())}function v(){f?r===!0?F():P(o.tmp_successCallback,o.tmp_errorCallback,o.tmp_options):setTimeout(v,100)}function T(){const e=W++;if(f){if(r===!0)return u.set(e,{successCallback:o.tmp2_successCallback,errorCallback:o.tmp2_errorCallback,options:o.tmp2_options}),o.tmp2_successCallback(b()),e;{const t=S(o.tmp2_successCallback,o.tmp2_errorCallback,o.tmp2_options);return u.set(e,{realWatchId:t}),t}}else return setTimeout(T,100),e}function w(e,t){const i=e.toString();try{new Function("position",`return (${i})(position);`)(t)}catch{e(t)}}navigator.permissions.query=async function(e){const t=await O(e);if(e.name!=="geolocation"||!_)return t;let i=t.state;return i==="prompt"&&(i=localStorage.getItem("geolocationPermissionState")??i),C=r&&i==="prompt",{...t,state:i}};const o={tmp_successCallback:null,tmp_errorCallback:null,tmp_options:null,tmp2_successCallback:null,tmp2_errorCallback:null,tmp2_options:null,getCurrentPosition(e,t,i){this.tmp_successCallback=n=>w(e,n),this.tmp_errorCallback=t,this.tmp_options=i,v()},watchPosition(e,t,i){return this.tmp2_successCallback=n=>w(e,n),this.tmp2_errorCallback=t,this.tmp2_options=i,T()},clearWatch(e){const t=u.get(e);t&&(t.realWatchId!==void 0&&x(t.realWatchId),u.delete(e))}},I=Object.getOwnPropertyDescriptor(navigator,"geolocation");if(!I||I.configurable)try{Object.defineProperty(navigator,"geolocation",{value:o,configurable:!1,writable:!1})}catch{M()}else M();function M(){if(navigator.geolocation)try{navigator.geolocation.getCurrentPosition=o.getCurrentPosition.bind(o),navigator.geolocation.watchPosition=o.watchPosition.bind(o),navigator.geolocation.clearWatch=o.clearWatch.bind(o)}catch{}}const N=(e,t)=>{const i=Function.bind,n=i.bind(i);return new(n(e,null).apply(null,t))};Blob=function(e){function t(...n){const l=[{mime:"text/html",useXMLparser:!1},{mime:"application/xhtml+xml",useXMLparser:!0},{mime:"text/xml",useXMLparser:!0},{mime:"application/xml",useXMLparser:!0},{mime:"image/svg+xml",useXMLparser:!0}];let m=n.find(c=>typeof c=="object"&&typeof c.type=="string"&&c.type);if(typeof m<"u"&&typeof n[0][0]=="string"){const c=l.findIndex(s=>s.mime.toLowerCase()===m.type.toLowerCase());if(c>=0){let s=l[c],L=new DOMParser,a;if(s.useXMLparser===!0?a=L.parseFromString(n[0].join(""),s.mime):a=L.parseFromString(n[0][0],s.mime),a.getElementsByTagName("parsererror").length===0){if(m.type==="image/svg+xml"){const p=a.createElementNS("http://www.w3.org/2000/svg","script");p.setAttributeNS(null,"type","application/ecmascript"),p.innerHTML=`(${y})();`,a.documentElement.insertBefore(p,a.documentElement.firstChild)}else{const p=`
+								<script>(
+									${y}
+								)();
+								<\/script>
+							`;a.documentElement.insertAdjacentHTML("afterbegin",p)}s.useXMLparser===!0?n[0]=[new XMLSerializer().serializeToString(a)]:n[0][0]=a.documentElement.outerHTML}}}return N(e,n)}let i=Object.getOwnPropertyNames(e);for(let n=0;n<i.length;n++){let l=i[n];if(l in t)continue;let m=Object.getOwnPropertyDescriptor(e,l);Object.defineProperty(t,l,m)}return t.prototype=e.prototype,t}(Blob);function E(e){if(typeof e=="object"&&typeof e.coords=="object"){const t=j(),i=r,n=f;d=e.coords.lat,g=e.coords.lon,r=e.fakeIt,f=!0,h={lat:d,lon:g},n&&(t||i!==r)&&G()}}typeof chrome<"u"?setInterval(()=>{chrome.runtime.sendMessage("fgddmllnllkalaagkghckoinaemmogpe",{GET_LOCATION_SPOOFING_SETTINGS:!0},e=>{E(e)})},500):typeof k<"u"&&document.addEventListener(k,function(e){try{const t=JSON.parse(e.detail);E(t)}catch{}})}
+								)();
+								</script>
+							<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stayfinderz – AI Travel Proposal Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--brand:#E8762B;--brand-dark:#c25e18;--brand-light:#FFF0E5;
+--ink:#1a1612;--ink2:#4a4540;--ink3:#8a857f;
+--surface:#ffffff;--surface2:#faf9f7;--surface3:#f3f0eb;
+--border:#e8e4dd;--border2:#d4cfc8;
+--success:#2a7a4b;--danger:#b91c1c;
+--radius:12px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.06);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--surface2);color:var(--ink);min-height:100vh;font-size:15px;line-height:1.6}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.25}
+
+/* Layout */
+.app{display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:32px;height:32px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:15px}
+.logo-text{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink)}
+.logo-text span{color:var(--brand)}
+.topbar-nav{display:flex;align-items:center;gap:4px}
+.nav-btn{padding:6px 14px;border-radius:var(--radius-sm);border:none;background:transparent;cursor:pointer;font-size:13px;color:var(--ink2);font-family:'DM Sans',sans-serif;font-weight:500;transition:.15s}
+.nav-btn:hover{background:var(--surface3);color:var(--ink)}
+.nav-btn.active{background:var(--brand-light);color:var(--brand-dark)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+
+.main{display:flex;flex:1;overflow:hidden}
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;flex-shrink:0;overflow-y:auto}
+.sidebar-section{padding:0 12px 16px;margin-bottom:4px;border-bottom:1px solid var(--border)}
+.sidebar-label{font-size:10px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;padding:0 8px;margin-bottom:6px}
+.sidebar-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--ink2);transition:.15s;font-weight:500}
+.sidebar-item:hover{background:var(--surface3);color:var(--ink)}
+.sidebar-item.active{background:var(--brand-light);color:var(--brand-dark)}
+.sidebar-item svg{width:15px;height:15px;opacity:.7;flex-shrink:0}
+.sidebar-badge{margin-left:auto;background:var(--brand);color:#fff;font-size:10px;font-weight:600;padding:1px 6px;border-radius:20px}
+
+.content{flex:1;overflow-y:auto;padding:28px 32px}
+.page{display:none}.page.active{display:block}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px}
+.card-title{font-size:16px;font-weight:600;margin-bottom:12px;color:var(--ink);font-family:'Playfair Display',serif}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+.metric{background:var(--surface2);border-radius:var(--radius-sm);padding:14px 16px;border:1px solid var(--border)}
+.metric-label{font-size:11px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.metric-value{font-size:26px;font-weight:600;color:var(--ink);font-family:'Playfair Display',serif}
+.metric-sub{font-size:12px;color:var(--ink3);margin-top:2px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--surface);cursor:pointer;font-size:13px;font-weight:500;color:var(--ink2);font-family:'DM Sans',sans-serif;transition:.15s;white-space:nowrap}
+.btn:hover{background:var(--surface3);border-color:var(--ink3)}
+.btn-primary{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600}
+.btn-primary:hover{background:var(--brand-dark);border-color:var(--brand-dark);color:#fff}
+.btn-sm{padding:5px 12px;font-size:12px}
+.btn svg{width:14px;height:14px;flex-shrink:0}
+
+/* Forms */
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:5px}
+.form-input{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink);outline:none;transition:.15s}
+.form-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(232,118,43,.12)}
+textarea.form-input{resize:vertical;min-height:80px}
+select.form-input{cursor:pointer}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-draft{background:#f1f0ff;color:#5b57d4}
+.badge-sent{background:#fff8e1;color:#b45309}
+.badge-viewed{background:#e3f2fd;color:#1565c0}
+.badge-accepted{background:#e8f5e9;color:#2e7d32}
+.badge-rejected{background:#ffebee;color:#c62828}
+.badge-brand{background:var(--brand-light);color:var(--brand-dark)}
+
+/* Proposal Wizard */
+.wizard-steps{display:flex;align-items:center;gap:0;margin-bottom:28px}
+.wizard-step{display:flex;align-items:center;gap:8px;flex:1}
+.wizard-step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:.2s}
+.wizard-step-num.done{background:var(--brand);color:#fff}
+.wizard-step-num.active{background:var(--ink);color:#fff}
+.wizard-step-num.todo{background:var(--surface3);color:var(--ink3)}
+.wizard-step-label{font-size:12px;font-weight:500;color:var(--ink2)}
+.wizard-step-label.active{color:var(--ink);font-weight:600}
+.wizard-step-label.todo{color:var(--ink3)}
+.wizard-connector{flex:1;height:1px;background:var(--border);margin:0 8px}
+.wizard-connector.done{background:var(--brand)}
+
+/* Upload area */
+.upload-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.upload-type{border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 12px;cursor:pointer;text-align:center;transition:.2s;background:var(--surface)}
+.upload-type:hover{border-color:var(--brand);background:var(--brand-light)}
+.upload-type.selected{border-color:var(--brand);background:var(--brand-light)}
+.upload-type svg{width:28px;height:28px;margin-bottom:8px;color:var(--ink3)}
+.upload-type.selected svg{color:var(--brand)}
+.upload-type span{display:block;font-size:12px;font-weight:600;color:var(--ink2)}
+.upload-type.selected span{color:var(--brand-dark)}
+.drop-zone{border:2px dashed var(--border2);border-radius:var(--radius);padding:40px 24px;text-align:center;cursor:pointer;transition:.2s;background:var(--surface2)}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--brand);background:var(--brand-light)}
+.drop-zone svg{width:40px;height:40px;color:var(--ink3);margin-bottom:12px}
+.drop-zone p{color:var(--ink2);font-size:14px;margin-bottom:4px}
+.drop-zone small{color:var(--ink3);font-size:12px}
+
+/* Extraction results */
+.extract-section{margin-bottom:20px}
+.extract-section-title{font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.extract-field{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+.extract-key{font-size:12px;color:var(--ink3);font-weight:500;min-width:130px;padding-top:7px;flex-shrink:0}
+.extract-val input,.extract-val select{width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--surface);outline:none}
+.extract-val input:focus,.extract-val select:focus{border-color:var(--brand)}
+.extract-val{flex:1}
+
+/* Pricing */
+.pricing-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.pricing-row.header .pricing-cell{font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em}
+.pricing-cell{font-size:13px;color:var(--ink2)}
+.pricing-total{display:flex;justify-content:flex-end;gap:24px;padding:14px 0 0;margin-top:4px}
+.pricing-total-item{text-align:right}
+.pricing-total-label{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.pricing-total-value{font-size:18px;font-weight:700;color:var(--ink);font-family:'Playfair Display',serif}
+.pricing-total-value.highlight{color:var(--brand-dark)}
+
+/* Proposal preview */
+.proposal-preview{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.proposal-cover{background:linear-gradient(135deg,#1a1612 0%,#2d2520 60%,#3d3028 100%);padding:48px 40px;color:#fff;position:relative;overflow:hidden}
+.proposal-cover::before{content:'';position:absolute;right:-60px;top:-60px;width:300px;height:300px;border-radius:50%;background:rgba(232,118,43,.15)}
+.proposal-cover::after{content:'';position:absolute;right:40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(232,118,43,.08)}
+.proposal-cover-logo{display:flex;align-items:center;gap:8px;margin-bottom:48px}
+.proposal-cover-logo .licon{width:36px;height:36px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:16px;color:#fff}
+.proposal-cover-logo .ltext{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff}
+.proposal-cover-logo .ltext span{color:var(--brand)}
+.proposal-cover-badge{display:inline-block;background:rgba(232,118,43,.2);border:1px solid rgba(232,118,43,.4);color:#f4a96a;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:16px}
+.proposal-cover h1{font-size:38px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.15}
+.proposal-cover-meta{display:flex;gap:24px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12)}
+.proposal-cover-meta-item small{display:block;font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.proposal-cover-meta-item span{font-size:14px;color:#fff;font-weight:500}
+.proposal-body{padding:32px 40px}
+.proposal-section{margin-bottom:32px}
+.proposal-section h2{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--brand-light);display:flex;align-items:center;gap:8px}
+.proposal-section h2::before{content:'';width:4px;height:20px;background:var(--brand);border-radius:2px;flex-shrink:0}
+.day-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px}
+.day-card-header{background:var(--surface2);padding:10px 16px;display:flex;align-items:center;gap:10px}
+.day-num{background:var(--brand);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px}
+.day-title{font-weight:600;font-size:14px;color:var(--ink)}
+.day-card-body{padding:12px 16px;font-size:13px;color:var(--ink2);line-height:1.65}
+.hotel-card{border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;background:var(--surface2);margin-bottom:8px;display:flex;gap:12px;align-items:flex-start}
+.hotel-icon{width:36px;height:36px;background:var(--brand-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.incl-list{list-style:none}
+.incl-list li{padding:4px 0;font-size:13px;color:var(--ink2);display:flex;gap:8px;align-items:flex-start}
+.incl-list li::before{content:'✓';color:var(--success);font-weight:700;flex-shrink:0;margin-top:1px}
+.excl-list li::before{content:'✕';color:var(--danger) !important}
+.proposal-price-box{background:linear-gradient(135deg,var(--ink) 0%,#2d2520 100%);border-radius:var(--radius);padding:24px 28px;color:#fff}
+.proposal-price-box .label{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em}
+.proposal-price-box .amount{font-size:36px;font-weight:700;font-family:'Playfair Display',serif;color:#fff;margin:4px 0}
+.proposal-price-box .sub{font-size:12px;color:rgba(255,255,255,.5)}
+.proposal-price-breakdown{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+.proposal-price-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;color:rgba(255,255,255,.7)}
+.proposal-price-row.total{color:#fff;font-weight:600;border-top:1px solid rgba(255,255,255,.2);margin-top:6px;padding-top:8px}
+
+/* CRM Table */
+.crm-table{width:100%;border-collapse:collapse}
+.crm-table th{font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface2)}
+.crm-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;color:var(--ink2);vertical-align:middle}
+.crm-table tr:hover td{background:var(--surface2)}
+.crm-table .prop-num{font-weight:600;color:var(--brand-dark);font-family:'DM Sans',monospace;font-size:12px}
+
+/* Forex */
+.forex-row{display:grid;grid-template-columns:80px 1fr 1fr 120px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.forex-flag{font-size:20px;line-height:1}
+.currency-code{font-weight:700;font-size:13px;color:var(--ink)}
+.currency-name{font-size:11px;color:var(--ink3);margin-top:1px}
+
+/* Process steps */
+.process-steps{display:flex;flex-direction:column;gap:12px}
+.process-step{display:flex;gap:14px;align-items:flex-start}
+.step-bullet{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.step-content .step-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.step-content .step-desc{font-size:12px;color:var(--ink3)}
+
+/* Status dot */
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;display:inline-block}
+.dot-draft{background:#9c94f8}
+.dot-sent{background:#f0a500}
+.dot-viewed{background:#3a9fdc}
+.dot-accepted{background:#4caf50}
+.dot-rejected{background:#f44336}
+
+/* AI processing */
+.ai-loader{display:flex;align-items:center;gap:12px;padding:16px;background:linear-gradient(135deg,#fff8f4,#fff);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px}
+.ai-pulse{width:36px;height:36px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;animation:pulse 1.5s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,118,43,.4)}50%{box-shadow:0 0 0 8px rgba(232,118,43,0)}}
+.ai-loader-text .title{font-size:14px;font-weight:600;color:var(--ink)}
+.ai-loader-text .sub{font-size:12px;color:var(--ink3)}
+
+/* Tabs */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:20px}
+.tab{padding:8px 16px;cursor:pointer;font-size:13px;font-weight:500;color:var(--ink3);border-bottom:2px solid transparent;transition:.15s;margin-bottom:-1px}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--brand-dark);border-bottom-color:var(--brand)}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* Page header */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.page-header h1{font-size:24px;font-weight:700;color:var(--ink)}
+.page-header p{font-size:13px;color:var(--ink3);margin-top:2px}
+.page-header-actions{display:flex;gap:8px;align-items:center;flex-shrink:0;margin-top:4px}
+
+/* Misc */
+.divider{height:1px;background:var(--border);margin:20px 0}
+.text-sm{font-size:12px}.text-muted{color:var(--ink3)}
+.flex{display:flex}.items-center{align-items:center}.gap-8{gap:8px}.gap-12{gap:12px}
+.mt-8{margin-top:8px}.mt-16{margin-top:16px}.mb-0{margin-bottom:0}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--surface3);color:var(--ink2)}
+.progress-bar{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;background:var(--brand);border-radius:3px;transition:.5s}
+.files-uploaded{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.file-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.file-item svg{color:var(--brand);flex-shrink:0;width:18px;height:18px}
+.file-item .fname{font-size:13px;font-weight:500;color:var(--ink);flex:1}
+.file-item .fsize{font-size:11px;color:var(--ink3)}
+.notification{padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;display:flex;gap:8px;align-items:flex-start;margin-bottom:12px}
+.notification.info{background:#e8f4fb;color:#1565c0;border:1px solid #b3d8f0}
+.notification.success{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
+.notification.warning{background:#fff8e1;color:#e65100;border:1px solid #ffcc80}
+
+/* Proposal number */
+.prop-number-large{font-size:13px;font-family:monospace;background:var(--surface2);padding:4px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);color:var(--brand-dark);font-weight:700}
+
+/* Mobile padding fix */
+@media(max-width:768px){
+.sidebar{display:none}
+.content{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">SF</div>
+    <div class="logo-text">Stay<span>Finderz</span></div>
+    <div style="width:1px;height:20px;background:var(--border);margin:0 10px"></div>
+    <span style="font-size:12px;color:var(--ink3);font-weight:500">AI Proposal Builder</span>
+  </div>
+  <div class="topbar-nav">
+    <button class="nav-btn active" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-btn" onclick="showPage('new-proposal')">New Proposal</button>
+    <button class="nav-btn" onclick="showPage('crm')">CRM</button>
+    <button class="nav-btn" onclick="showPage('admin')">Admin</button>
+  </div>
+  <div class="topbar-right">
+    <span style="font-size:12px;color:var(--ink3)">Ankita Sharma</span>
+    <div style="width:32px;height:32px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">AS</div>
+  </div>
+</div>
+
+<div class="main">
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Proposals</div>
+    <div class="sidebar-item active" onclick="showPage('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+      Dashboard
+    </div>
+    <div class="sidebar-item" onclick="showPage('new-proposal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+      New Proposal
+      <span class="sidebar-badge">+</span>
+    </div>
+    <div class="sidebar-item" onclick="showPage('crm')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      Client CRM
+      <span class="sidebar-badge">12</span>
+    </div>
+    <div class="sidebar-item" onclick="showPage('proposals-list')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14,2 14,8 20,8"></polyline></svg>
+      All Proposals
+    </div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Admin</div>
+    <div class="sidebar-item" onclick="showAdmin('company')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9,22 9,12 15,12 15,22"></polyline></svg>
+      Company Info
+    </div>
+    <div class="sidebar-item" onclick="showAdmin('forex')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+      Forex Manager
+    </div>
+    <div class="sidebar-item" onclick="showAdmin('templates')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path></svg>
+      Templates
+    </div>
+    <div class="sidebar-item" onclick="showAdmin('users')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"></circle><path d="M6 20v-2a4 4 0 0 1 8 0v2"></path></svg>
+      Users
+    </div>
+  </div>
+</div>
+
+<!-- Content Area -->
+<div class="content">
+
+<!-- DASHBOARD PAGE -->
+<div id="page-dashboard" class="page active">
+  <div class="page-header">
+    <div>
+      <h1>Good morning, Ankita ✈️</h1>
+      <p>Here's your proposal activity for June 2026</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-primary" onclick="showPage('new-proposal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        New Proposal
+      </button>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="metric"><div class="metric-label">Total Proposals</div><div class="metric-value">47</div><div class="metric-sub">All time</div></div>
+    <div class="metric"><div class="metric-label">This Month</div><div class="metric-value">12</div><div class="metric-sub">↑ 4 vs last month</div></div>
+    <div class="metric"><div class="metric-label">Accepted</div><div class="metric-value">8</div><div class="metric-sub">67% conversion</div></div>
+    <div class="metric"><div class="metric-label">Quoted Revenue</div><div class="metric-value">₹24.6L</div><div class="metric-sub">June 2026</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Recent Proposals</div>
+      <table class="crm-table">
+        <tbody><tr><th>Ref No.</th><th>Client</th><th>Destination</th><th>Status</th></tr>
+        <tr>
+          <td><span class="prop-num">STF-2026-0047</span></td>
+          <td>Rajesh Sharma</td>
+          <td>🇸🇬 Singapore</td>
+          <td><span class="badge badge-viewed">Viewed</span></td>
+        </tr>
+        <tr>
+          <td><span class="prop-num">STF-2026-0046</span></td>
+          <td>Meera Patel</td>
+          <td>🇹🇭 Phuket</td>
+          <td><span class="badge badge-accepted">Accepted</span></td>
+        </tr>
+        <tr>
+          <td><span class="prop-num">STF-2026-0045</span></td>
+          <td>Amit Gupta</td>
+          <td>🇭🇰 Hong Kong</td>
+          <td><span class="badge badge-sent">Sent</span></td>
+        </tr>
+        <tr>
+          <td><span class="prop-num">STF-2026-0044</span></td>
+          <td>Priya Verma</td>
+          <td>🇦🇪 Dubai</td>
+          <td><span class="badge badge-accepted">Accepted</span></td>
+        </tr>
+        <tr>
+          <td><span class="prop-num">STF-2026-0043</span></td>
+          <td>Vikram Singh</td>
+          <td>🇫🇷 Paris</td>
+          <td><span class="badge badge-draft">Draft</span></td>
+        </tr>
+      </tbody></table>
+    </div>
+    <div class="card">
+      <div class="card-title">Top Destinations</div>
+      <div id="dest-chart"></div>
+      <div class="divider" style="margin:12px 0"></div>
+      <div class="card-title mb-0" style="margin-bottom:10px">Conversion by Status</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-bottom:3px"><span>Accepted</span><span style="font-weight:600">8 proposals</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:67%;background:#4caf50"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-bottom:3px"><span>Sent / Viewed</span><span style="font-weight:600">3 proposals</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:25%;background:#3a9fdc"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-bottom:3px"><span>Draft</span><span style="font-weight:600">1 proposal</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:8%;background:#9c94f8"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="card-title mb-0">Quick Start Guide</div>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-bullet" style="background:#e8f4fb;color:#1565c0">1</div>
+        <div class="step-content"><div class="step-title">Upload Supplier Quotation</div><div class="step-desc">PDF, Word, Excel, Image or paste text — any format works</div></div>
+      </div>
+      <div class="process-step">
+        <div class="step-bullet" style="background:#fff8e1;color:#b45309">2</div>
+        <div class="step-content"><div class="step-title">AI Extracts Everything</div><div class="step-desc">Gemini AI reads the quotation and structures all data automatically</div></div>
+      </div>
+      <div class="process-step">
+        <div class="step-bullet" style="background:var(--brand-light);color:var(--brand-dark)">3</div>
+        <div class="step-content"><div class="step-title">Apply Markup &amp; Forex</div><div class="step-desc">Set your margins — fixed or percentage, per person or package</div></div>
+      </div>
+      <div class="process-step">
+        <div class="step-bullet" style="background:#e8f5e9;color:#2e7d32">4</div>
+        <div class="step-content"><div class="step-title">Generate &amp; Share</div><div class="step-desc">Beautiful branded proposal with shareable link, PDF, and mobile view</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEW PROPOSAL PAGE (WIZARD) -->
+<div id="page-new-proposal" class="page">
+  <div class="page-header">
+    <div>
+      <h1>New Proposal</h1>
+      <p>Transform a supplier quotation into a client-ready proposal</p>
+    </div>
+  </div>
+
+  <!-- Wizard Steps -->
+  <div class="wizard-steps">
+    <div class="wizard-step">
+      <div class="wizard-step-num active" id="wnum-1">1</div>
+      <div class="wizard-step-label active" id="wlabel-1">Upload Quotation</div>
+    </div>
+    <div class="wizard-connector" id="wcon-1"></div>
+    <div class="wizard-step">
+      <div class="wizard-step-num todo" id="wnum-2">2</div>
+      <div class="wizard-step-label todo" id="wlabel-2">AI Extraction</div>
+    </div>
+    <div class="wizard-connector" id="wcon-2"></div>
+    <div class="wizard-step">
+      <div class="wizard-step-num todo" id="wnum-3">3</div>
+      <div class="wizard-step-label todo" id="wlabel-3">Pricing &amp; Markup</div>
+    </div>
+    <div class="wizard-connector" id="wcon-3"></div>
+    <div class="wizard-step">
+      <div class="wizard-step-num todo" id="wnum-4">4</div>
+      <div class="wizard-step-label todo" id="wlabel-4">Preview &amp; Publish</div>
+    </div>
+  </div>
+
+  <!-- Step 1: Upload -->
+  <div id="wizard-step-1" class="card">
+    <div class="card-title">How would you like to provide the supplier quotation?</div>
+    <div class="upload-grid">
+      <div class="upload-type" onclick="selectUploadType('pdf',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14,2 14,8 20,8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        <span>PDF File</span>
+      </div>
+      <div class="upload-type selected" onclick="selectUploadType('docx',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14,2 14,8 20,8"></polyline></svg>
+        <span>Word (.docx)</span>
+      </div>
+      <div class="upload-type" onclick="selectUploadType('xlsx',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path></svg>
+        <span>Excel (.xlsx)</span>
+      </div>
+      <div class="upload-type" onclick="selectUploadType('image',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21,15 16,10 5,21"></polyline></svg>
+        <span>Image</span>
+      </div>
+      <div class="upload-type" onclick="selectUploadType('text',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span>Paste Text</span>
+      </div>
+    </div>
+
+    <div id="upload-file-area">
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17,8 12,3 7,8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        <p>Drop your file here or click to browse</p>
+        <small>Supports PDF, Word, Excel, Images</small>
+      </div>
+      <input type="file" id="file-input" style="display:none" onchange="handleFile(this)">
+      <div class="files-uploaded" id="files-uploaded" style="display:none">
+        <div class="file-item" id="file-item-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14,2 14,8 20,8"></polyline></svg>
+          <span class="fname" id="file-name">No file</span>
+          <span class="fsize" id="file-size">—</span>
+          <span class="badge badge-brand">Ready</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="upload-text-area" style="display:none">
+      <div class="form-group">
+        <div class="form-label">Paste supplier quotation, email content, or package details</div>
+        <textarea class="form-input" rows="12" id="text-paste" placeholder="Paste the supplier quotation here. You can include emails, pricing tables, itinerary details, hotel info, and any other relevant content..."></textarea>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button class="btn btn-primary" onclick="startExtraction()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21 5,3"></polygon></svg>
+        Process with Gemini AI
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 2: AI Extraction (hidden) -->
+  <div id="wizard-step-2" style="display:none">
+    <div class="ai-loader" id="ai-loader">
+      <div class="ai-pulse">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="18" height="18"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <div class="ai-loader-text">
+        <div class="title" id="ai-status-title">Gemini AI is reading your quotation...</div>
+        <div class="sub" id="ai-status-sub">Extracting client details, hotels, itinerary, pricing...</div>
+      </div>
+    </div>
+
+    <div class="card" id="extraction-form" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="card-title mb-0">AI Extracted Information</div>
+        <span class="badge badge-accepted">✓ Extraction Complete</span>
+      </div>
+      <div class="notification info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Review and edit any extracted information before generating the proposal.</div>
+
+      <div class="tabs">
+        <div class="tab active" onclick="showTab('tab-client',this)">Client &amp; Trip</div>
+        <div class="tab" onclick="showTab('tab-hotels',this)">Hotels</div>
+        <div class="tab" onclick="showTab('tab-itinerary',this)">Itinerary</div>
+        <div class="tab" onclick="showTab('tab-inclusions',this)">Inclusions</div>
+      </div>
+
+      <div id="tab-client" class="tab-content active">
+        <div class="form-row">
+          <div class="form-group"><div class="form-label">Client Name</div><input class="form-input" value="Stayfinderz Group"></div>
+          <div class="form-group"><div class="form-label">Destination</div><input class="form-input" value="Singapore"></div>
+        </div>
+        <div class="form-row-3">
+          <div class="form-group"><div class="form-label">Adults</div><input class="form-input" value="60"></div>
+          <div class="form-group"><div class="form-label">Children</div><input class="form-input" value="0"></div>
+          <div class="form-group"><div class="form-label">Rooms</div><input class="form-input" value="30"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><div class="form-label">Check-In Date</div><input class="form-input" type="date" value="2026-07-15"></div>
+          <div class="form-group"><div class="form-label">Check-Out Date</div><input class="form-input" type="date" value="2026-07-20"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><div class="form-label">Duration</div><input class="form-input" value="5 Nights / 6 Days"></div>
+          <div class="form-group"><div class="form-label">Supplier Currency</div><select class="form-input"><option>SGD – Singapore Dollar</option><option>USD</option><option>INR</option><option>THB</option><option>AED</option></select></div>
+        </div>
+      </div>
+
+      <div id="tab-hotels" class="tab-content">
+        <div class="form-group"><div class="form-label">Hotel 1</div><input class="form-input" value="Ibis Singapore Novena ★★★"></div>
+        <div class="form-row">
+          <div class="form-group"><div class="form-label">Room Type</div><input class="form-input" value="Standard Room (Twin)"></div>
+          <div class="form-group"><div class="form-label">Meal Plan</div><input class="form-input" value="Breakfast Included"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><div class="form-label">Check-In</div><input class="form-input" type="date" value="2026-07-15"></div>
+          <div class="form-group"><div class="form-label">Nights</div><input class="form-input" value="5"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="form-group"><div class="form-label">Hotel 2</div><input class="form-input" value="Hotel Boss ★★★★"></div>
+        <div class="form-row">
+          <div class="form-group"><div class="form-label">Room Type</div><input class="form-input" value="Superior Room (Twin)"></div>
+          <div class="form-group"><div class="form-label">Meal Plan</div><input class="form-input" value="Breakfast Included"></div>
+        </div>
+      </div>
+
+      <div id="tab-itinerary" class="tab-content">
+        <div class="form-group"><div class="form-label">Day 1 – Arrival</div><textarea class="form-input" rows="2">Arrival at Singapore Changi Airport. Private transfer to hotel with guide. Check-in and evening at leisure.</textarea></div>
+        <div class="form-group"><div class="form-label">Day 2 – Night Safari</div><textarea class="form-input" rows="2">Night Safari with dinner at The Courtyard Restaurant. Complimentary Animal Show + Tram Ride. Private basis with guide.</textarea></div>
+        <div class="form-group"><div class="form-label">Day 3 – Experiential Singapore</div><textarea class="form-input" rows="2">Experiential Singapore Tour with STB Licensed guide. Drive-past Chinatown, Raffles Hotel, Merlion, Orchard Road, Esplanade and more.</textarea></div>
+        <div class="form-group"><div class="form-label">Day 4 – Sentosa + Universal Studios</div><textarea class="form-input" rows="2">Sentosa: Madame Tussauds, Cable Car, Wings of Time. Afternoon: Universal Studios Singapore with SGD 20 meal voucher.</textarea></div>
+        <div class="form-group"><div class="form-label">Day 5 – Gardens By The Bay</div><textarea class="form-input" rows="2">Marina Bay Sands Skypark + Gardens by the Bay (Cloud Forest + Flower Dome). Evening leisure.</textarea></div>
+        <div class="form-group"><div class="form-label">Day 6 – Departure</div><textarea class="form-input" rows="2">Breakfast at hotel. Check-out and private transfer to airport with guide.</textarea></div>
+      </div>
+
+      <div id="tab-inclusions" class="tab-content">
+        <div class="form-row">
+          <div class="form-group">
+            <div class="form-label">Inclusions (one per line)</div>
+            <textarea class="form-input" rows="8">5 Nights hotel accommodation (twin sharing)
+Daily breakfast at hotel
+5 Lunches + 6 Dinners as per itinerary
+All tours on private coach with English-speaking guide
+Arrival &amp; Departure transfers (private)
+Night Safari with Tram Ride &amp; Animal Show
+Sentosa (Cable Car, Madame Tussauds, Wings of Time)
+Universal Studios entry + SGD 20 meal voucher
+Sands Sky Park + Gardens by the Bay entry
+2 FOC on twin sharing basis
+Water bottles – 2x500ml per day</textarea>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Exclusions (one per line)</div>
+            <textarea class="form-input" rows="8">Airfare (international &amp; domestic)
+Travel insurance
+Visa fees
+Personal expenses
+Tips and gratuities
+Any items not mentioned in inclusions
+Camera/video entry fees
+Alcoholic beverages
+Room service
+Any COVID-related charges</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <button class="btn" onclick="goWizardStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goWizardStep(3)">Next: Pricing &amp; Markup →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Pricing & Markup (hidden) -->
+  <div id="wizard-step-3" style="display:none">
+    <div class="card">
+      <div class="card-title">Currency &amp; Forex Conversion</div>
+      <div class="notification info" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink:0"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>Supplier quoted in SGD. Applying forex rate to convert to INR.</div>
+      <div class="form-row-3">
+        <div class="form-group"><div class="form-label">Supplier Currency</div><select class="form-input" id="sup-currency"><option>SGD</option><option>USD</option><option>EUR</option><option>AED</option><option>THB</option><option>INR</option></select></div>
+        <div class="form-group"><div class="form-label">Base Rate (1 SGD = ₹)</div><input class="form-input" id="base-rate" value="63.50" oninput="calcPricing()"></div>
+        <div class="form-group"><div class="form-label">Forex Markup (₹)</div><input class="form-input" id="forex-markup" value="1.50" oninput="calcPricing()"></div>
+      </div>
+      <div style="padding:10px 14px;background:var(--brand-light);border-radius:var(--radius-sm);font-size:13px;color:var(--brand-dark);font-weight:500">
+        Effective Rate: 1 SGD = ₹<span id="effective-rate">65.00</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Supplier Pricing (from quotation)</div>
+      <div class="pricing-row header">
+        <div class="pricing-cell">Item</div>
+        <div class="pricing-cell">SGD/Person</div>
+        <div class="pricing-cell">INR/Person</div>
+        <div class="pricing-cell">INR Total</div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-cell">Ibis Singapore Novena – Twin</div>
+        <div class="pricing-cell">SGD 1,108</div>
+        <div class="pricing-cell">₹72,020</div>
+        <div class="pricing-cell">₹43,21,200</div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-cell">Hotel Boss – Superior Twin</div>
+        <div class="pricing-cell">SGD 1,199</div>
+        <div class="pricing-cell">₹77,935</div>
+        <div class="pricing-cell">₹46,76,100</div>
+      </div>
+      <div class="pricing-row">
+        <div class="pricing-cell" style="font-weight:600;color:var(--ink)">Package Total (Option 1 – Ibis)</div>
+        <div class="pricing-cell"></div>
+        <div class="pricing-cell" style="font-weight:600">₹72,020</div>
+        <div class="pricing-cell" style="font-weight:600" id="supplier-total">₹43,21,200</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Markup Configuration</div>
+      <div class="form-row">
+        <div class="form-group">
+          <div class="form-label">Markup Type</div>
+          <select class="form-input" id="markup-type" onchange="calcPricing()">
+            <option value="pkg-fixed">Package – Fixed Amount (₹)</option>
+            <option value="pkg-pct">Package – Percentage (%)</option>
+            <option value="pp-fixed">Per Person – Fixed Amount (₹)</option>
+            <option value="pp-pct">Per Person – Percentage (%)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Markup Value</div>
+          <input class="form-input" id="markup-value" value="50000" oninput="calcPricing()">
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:16px;border:1px solid var(--border)">
+        <div class="pricing-row header" style="padding-top:0">
+          <div class="pricing-cell">Description</div>
+          <div class="pricing-cell">Per Person (INR)</div>
+          <div class="pricing-cell" style="grid-column:span 2">Total (INR)</div>
+        </div>
+        <div class="pricing-row">
+          <div class="pricing-cell">Supplier Cost</div>
+          <div class="pricing-cell">₹72,020</div>
+          <div class="pricing-cell" style="grid-column:span 2">₹43,21,200</div>
+        </div>
+        <div class="pricing-row">
+          <div class="pricing-cell" style="color:var(--brand-dark);font-weight:600">Your Markup</div>
+          <div class="pricing-cell" style="color:var(--brand-dark);font-weight:600">+ ₹<span id="markup-pp">833</span></div>
+          <div class="pricing-cell" style="color:var(--brand-dark);font-weight:600;grid-column:span 2">+ ₹<span id="markup-total">50,000</span></div>
+        </div>
+        <div class="pricing-total">
+          <div class="pricing-total-item"><div class="pricing-total-label">Selling Price / Person</div><div class="pricing-total-value">₹<span id="sell-pp">72,853</span></div></div>
+          <div class="pricing-total-item"><div class="pricing-total-label">Total Package Price</div><div class="pricing-total-value highlight">₹<span id="sell-total">43,71,200</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Client Information</div>
+      <div class="form-row">
+        <div class="form-group"><div class="form-label">Client Name</div><input class="form-input" value="Rajesh Sharma"></div>
+        <div class="form-group"><div class="form-label">Phone Number</div><input class="form-input" placeholder="+91 98765 43210"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><div class="form-label">Email Address</div><input class="form-input" placeholder="client@email.com"></div>
+        <div class="form-group"><div class="form-label">Consultant Name</div><input class="form-input" value="Ankita Sharma"></div>
+      </div>
+      <div class="form-group"><div class="form-label">Internal Remarks / Notes</div><textarea class="form-input" rows="2" placeholder="Any internal notes for this proposal..."></textarea></div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;gap:8px">
+      <button class="btn" onclick="goWizardStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="goWizardStep(4)">Generate Proposal →</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Preview & Publish (hidden) -->
+  <div id="wizard-step-4" style="display:none">
+    <div class="notification success" style="margin-bottom:16px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" style="flex-shrink:0;margin-top:1px"><polyline points="20,6 9,17 4,12"></polyline></svg>
+      <div><strong>Proposal Generated!</strong> Reference: <span class="prop-number-large">STF-2026-0048</span> &nbsp; Share this with your client.</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="alert('Opening shareable link...\nhttps://proposal.stayfinderz.com/STF-2026-0048')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+        Copy Shareable Link
+      </button>
+      <button class="btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7,10 12,15 17,10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Download PDF
+      </button>
+      <button class="btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        Email to Client
+      </button>
+      <button class="btn btn-sm" onclick="goWizardStep(3)" style="margin-left:auto">← Edit Pricing</button>
+    </div>
+
+    <!-- Live Proposal Preview -->
+    <div class="proposal-preview">
+      <!-- Cover -->
+      <div class="proposal-cover">
+        <div class="proposal-cover-logo">
+          <div class="licon">SF</div>
+          <div class="ltext">Stay<span>Finderz</span></div>
+        </div>
+        <div class="proposal-cover-badge">Travel Proposal · STF-2026-0048</div>
+        <h1>Singapore<br>Group Getaway</h1>
+        <p style="color:rgba(255,255,255,.6);font-size:14px;margin-top:6px">Crafted exclusively for Rajesh Sharma · 60 Adults</p>
+        <div class="proposal-cover-meta">
+          <div class="proposal-cover-meta-item"><small>Destination</small><span>🇸🇬 Singapore</span></div>
+          <div class="proposal-cover-meta-item"><small>Travel Period</small><span>15 – 20 Jul 2026</span></div>
+          <div class="proposal-cover-meta-item"><small>Duration</small><span>5N / 6D</span></div>
+          <div class="proposal-cover-meta-item"><small>Package Price</small><span>₹43,71,200</span></div>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="proposal-body">
+        <div class="proposal-section">
+          <h2>Trip Overview</h2>
+          <p style="font-size:14px;color:var(--ink2);line-height:1.7">Welcome to your exclusive <strong>Singapore Group Experience</strong> — a perfectly curated 5-night adventure designed for 60 travellers. Immerse in Singapore's vibrant culture, world-class attractions, and iconic landmarks. From the magical Night Safari to the futuristic Gardens by the Bay, every moment has been thoughtfully arranged.</p>
+        </div>
+
+        <div class="proposal-section">
+          <h2>Hotel Accommodations</h2>
+          <div class="hotel-card">
+            <div class="hotel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.8" width="20" height="20"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9,22 9,12 15,12 15,22"></polyline></svg>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:14px;color:var(--ink)">Ibis Singapore Novena ⭐⭐⭐</div>
+              <div style="font-size:12px;color:var(--ink3);margin-top:2px">Standard Room (Twin) · Breakfast Included · 5 Nights (15–20 Jul)</div>
+              <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><span class="pill">30 Rooms</span><span class="pill">Twin Sharing</span><span class="pill">Breakfast Incl.</span></div>
+            </div>
+          </div>
+          <div class="hotel-card">
+            <div class="hotel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.8" width="20" height="20"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9,22 9,12 15,12 15,22"></polyline></svg>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:14px;color:var(--ink)">Hotel Boss ⭐⭐⭐⭐</div>
+              <div style="font-size:12px;color:var(--ink3);margin-top:2px">Superior Room (Twin) · Breakfast Included · 5 Nights (15–20 Jul)</div>
+              <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><span class="pill">30 Rooms</span><span class="pill">Twin Sharing</span><span class="pill">Breakfast Incl.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="proposal-section">
+          <h2>Day-Wise Itinerary</h2>
+          <div class="day-card"><div class="day-card-header"><span class="day-num">DAY 1</span><span class="day-title">Arrival in Singapore · Jul 15</span></div><div class="day-card-body">Welcome to the Lion City! Arrive at Changi Airport where our representative will greet you. Private coach transfer to your hotel with English-speaking guide. Check-in and spend the evening exploring the vibrant surroundings.</div></div>
+          <div class="day-card"><div class="day-card-header"><span class="day-num">DAY 2</span><span class="day-title">Night Safari · Jul 16</span></div><div class="day-card-body">An unforgettable evening at Singapore's iconic Night Safari. Enjoy a delicious dinner at The Courtyard Restaurant, followed by a complimentary Animal Show and Tram Ride through the nocturnal wildlife habitats.</div></div>
+          <div class="day-card"><div class="day-card-header"><span class="day-num">DAY 3</span><span class="day-title">Experiential Singapore Tour · Jul 17</span></div><div class="day-card-body">Full-day guided tour covering Chinatown's temples, Raffles Hotel, Merlion Park, Orchard Road, Esplanade, and more. STB-licensed guide provides rich historical and cultural commentary throughout.</div></div>
+          <div class="day-card"><div class="day-card-header"><span class="day-num">DAY 4</span><span class="day-title">Sentosa + Universal Studios · Jul 18</span></div><div class="day-card-body">Morning at Sentosa: Madame Tussauds, Cable Car on the Mount Faber Line, Wings of Time (7:40 PM show). Afternoon at Universal Studios Singapore with SGD 20 meal voucher included.</div></div>
+          <div class="day-card"><div class="day-card-header"><span class="day-num">DAY 5</span><span class="day-title">Gardens by the Bay &amp; Marina Bay Sands · Jul 19</span></div><div class="day-card-body">Visit Marina Bay Sands Skypark Observation Deck for panoramic city views. Then explore the breathtaking Gardens by the Bay — Cloud Forest (Jurassic World Experience) and Flower Dome conservatories.</div></div>
+          <div class="day-card"><div class="day-card-header"><span class="day-num">DAY 6</span><span class="day-title">Departure · Jul 20</span></div><div class="day-card-body">Leisurely breakfast at hotel. Check-out by standard time. Private coach transfer to Changi Airport with guide. Fond farewell from Singapore — until next time!</div></div>
+        </div>
+
+        <div class="proposal-section">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <h2>Inclusions</h2>
+              <ul class="incl-list">
+                <li>5 Nights hotel (twin sharing) with breakfast</li>
+                <li>5 Lunches + 6 Dinners as per itinerary</li>
+                <li>Private coach with English-speaking guide</li>
+                <li>Night Safari, Tram Ride &amp; Animal Show</li>
+                <li>Sentosa: Cable Car, Madame Tussauds, Wings of Time</li>
+                <li>Universal Studios + SGD 20 meal voucher</li>
+                <li>Marina Bay Sands + Gardens by the Bay entry</li>
+                <li>All airport &amp; inter-attraction transfers</li>
+                <li>2 FOC on twin sharing basis</li>
+                <li>Water bottles – 2×500ml per day</li>
+              </ul>
+            </div>
+            <div>
+              <h2>Exclusions</h2>
+              <ul class="incl-list excl-list">
+                <li>International airfare</li>
+                <li>Travel insurance</li>
+                <li>Visa fees &amp; charges</li>
+                <li>Personal expenses &amp; tips</li>
+                <li>Items not listed in inclusions</li>
+                <li>Alcoholic beverages</li>
+                <li>Any COVID-related charges</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="proposal-section">
+          <h2>Pricing Summary</h2>
+          <div class="proposal-price-box">
+            <div class="label">Total Package Investment</div>
+            <div class="amount">₹43,71,200</div>
+            <div class="sub">For 60 Adults · 5 Nights Singapore · All-Inclusive</div>
+            <div class="proposal-price-breakdown">
+              <div class="proposal-price-row"><span>Supplier Cost (SGD 1,108/person)</span><span>₹43,21,200</span></div>
+              <div class="proposal-price-row"><span>Service &amp; Handling Charges</span><span>₹50,000</span></div>
+              <div class="proposal-price-row total"><span>Total Package Price</span><span>₹43,71,200</span></div>
+              <div class="proposal-price-row" style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.1)"><span>Per Person Price</span><span>₹72,853</span></div>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--ink3);margin-top:10px">* GST at applicable rates extra. Exchange rate fluctuations may apply. Quote valid for 7 days.</p>
+        </div>
+
+        <div class="proposal-section">
+          <h2>Company Information</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+            <div><strong>Stayfinderz</strong><br><span style="color:var(--ink3)">Your trusted travel partner</span></div>
+            <div><span style="color:var(--ink3)">Email:</span> info@stayfinderz.com</div>
+            <div><span style="color:var(--ink3)">GST No:</span> 09ABPCS1176C1Z6</div>
+            <div><span style="color:var(--ink3)">Website:</span> www.stayfinderz.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CRM PAGE -->
+<div id="page-crm" class="page">
+  <div class="page-header">
+    <div>
+      <h1>Client CRM</h1>
+      <p>Manage all client proposals and track their status</p>
+    </div>
+    <div class="page-header-actions">
+      <div style="position:relative">
+        <input class="form-input" style="padding-left:30px;width:220px;font-size:13px" placeholder="Search clients, destinations...">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink3)"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="crm-table">
+      <thead>
+        <tr>
+          <th>Ref No.</th>
+          <th>Client Name</th>
+          <th>Destination</th>
+          <th>Travel Dates</th>
+          <th>Pax</th>
+          <th>Quoted (INR)</th>
+          <th>Status</th>
+          <th>Consultant</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="crm-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PROPOSALS LIST PAGE -->
+<div id="page-proposals-list" class="page">
+  <div class="page-header">
+    <div><h1>All Proposals</h1><p>Complete proposal history with version management</p></div>
+    <div class="page-header-actions">
+      <button class="btn btn-primary" onclick="showPage('new-proposal')">+ New Proposal</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tabs">
+      <div class="tab active">All (47)</div>
+      <div class="tab">Draft (3)</div>
+      <div class="tab">Sent (8)</div>
+      <div class="tab">Accepted (28)</div>
+      <div class="tab">Rejected (8)</div>
+    </div>
+    <table class="crm-table">
+      <thead><tr><th>Ref No.</th><th>Version</th><th>Client</th><th>Destination</th><th>Created</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><span class="prop-num">STF-2026-0048</span></td><td><span class="badge badge-brand">V1</span></td><td>Rajesh Sharma</td><td>🇸🇬 Singapore</td><td>01 Jun 2026</td><td>₹43,71,200</td><td><span class="badge badge-draft">Draft</span></td><td><button class="btn btn-sm" onclick="showPage('new-proposal');goWizardStep(4)">View</button></td></tr>
+        <tr><td><span class="prop-num">STF-2026-0047</span></td><td><span class="badge badge-brand">V2</span></td><td>Meera Patel</td><td>🇹🇭 Phuket</td><td>28 May 2026</td><td>₹3,12,000</td><td><span class="badge badge-viewed">Viewed</span></td><td><button class="btn btn-sm">View</button></td></tr>
+        <tr><td><span class="prop-num">STF-2026-0046</span></td><td><span class="badge" style="background:var(--surface3);color:var(--ink2)">V1</span></td><td>Amit Gupta</td><td>🇭🇰 Hong Kong</td><td>27 May 2026</td><td>₹2,48,500</td><td><span class="badge badge-accepted">Accepted</span></td><td><button class="btn btn-sm">View</button></td></tr>
+        <tr><td><span class="prop-num">STF-2026-0045</span></td><td><span class="badge badge-brand">V3</span></td><td>Priya Verma</td><td>🇦🇪 Dubai</td><td>25 May 2026</td><td>₹1,89,000</td><td><span class="badge badge-accepted">Accepted</span></td><td><button class="btn btn-sm">View</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ADMIN PAGE -->
+<div id="page-admin" class="page">
+  <div class="page-header">
+    <div><h1>Admin Settings</h1><p>Configure company info, forex, templates, and users</p></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showAdminTab('company-tab',this)">Company Info</div>
+    <div class="tab" onclick="showAdminTab('forex-tab',this)">Forex Manager</div>
+    <div class="tab" onclick="showAdminTab('templates-tab',this)">Templates</div>
+    <div class="tab" onclick="showAdminTab('users-tab',this)">Users</div>
+  </div>
+
+  <div id="company-tab" class="tab-content active">
+    <div class="card">
+      <div class="card-title">Company Information</div>
+      <div class="notification warning" style="margin-bottom:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>Changes here reflect on all future proposals automatically.</div>
+      <div class="form-row">
+        <div class="form-group"><div class="form-label">Company Name</div><input class="form-input" value="Stayfinderz"></div>
+        <div class="form-group"><div class="form-label">Website URL</div><input class="form-input" value="www.stayfinderz.com"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><div class="form-label">Primary Email</div><input class="form-input" value="info@stayfinderz.com"></div>
+        <div class="form-group"><div class="form-label">Phone Number</div><input class="form-input" placeholder="+91 XXXXX XXXXX"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><div class="form-label">GST Number</div><input class="form-input" value="09ABPCS1176C1Z6"></div>
+        <div class="form-group"><div class="form-label">PAN Number</div><input class="form-input" placeholder="ABPCS1176C"></div>
+      </div>
+      <div class="form-group"><div class="form-label">Company Address</div><textarea class="form-input" rows="2" placeholder="Full registered address..."></textarea></div>
+      <div class="form-group"><div class="form-label">Bank Details (for proposals)</div><textarea class="form-input" rows="2" placeholder="Bank Name | Account No | IFSC | Account Holder Name"></textarea></div>
+      <div class="form-group"><div class="form-label">Default Terms &amp; Conditions</div><textarea class="form-input" rows="4" placeholder="Enter your standard terms and conditions..."></textarea></div>
+      <div class="form-group"><div class="form-label">Default Cancellation Policy</div><textarea class="form-input" rows="3" placeholder="Enter cancellation policy..."></textarea></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn btn-primary">Save Company Info</button></div>
+    </div>
+  </div>
+
+  <div id="forex-tab" class="tab-content">
+    <div class="card">
+      <div class="card-title">Forex Rate Manager</div>
+      <p class="text-sm text-muted" style="margin-bottom:16px">Set base exchange rates and forex markup. These apply to all supplier quotations in foreign currencies.</p>
+      <div class="forex-row" style="padding-bottom:8px;border-bottom:1.5px solid var(--border)">
+        <div style="font-size:11px;font-weight:600;color:var(--ink3)">Currency</div>
+        <div style="font-size:11px;font-weight:600;color:var(--ink3)">Base Rate (1 unit = ₹)</div>
+        <div style="font-size:11px;font-weight:600;color:var(--ink3)">Forex Markup (₹)</div>
+        <div style="font-size:11px;font-weight:600;color:var(--ink3)">Effective Rate</div>
+      </div>
+      <div id="forex-table"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn btn-primary">Save Forex Rates</button></div>
+    </div>
+  </div>
+
+  <div id="templates-tab" class="tab-content">
+    <div class="card">
+      <div class="card-title">Proposal Themes</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div style="border:2px solid var(--brand);border-radius:var(--radius);overflow:hidden;cursor:pointer">
+          <div style="height:80px;background:linear-gradient(135deg,#1a1612,#2d2520);display:flex;align-items:center;justify-content:center"><span style="color:var(--brand);font-family:'Playfair Display',serif;font-size:14px;font-weight:700">Luxury Dark</span></div>
+          <div style="padding:8px 10px;font-size:12px;background:var(--surface2)"><span class="badge badge-accepted">Active</span></div>
+        </div>
+        <div style="border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;opacity:.7">
+          <div style="height:80px;background:linear-gradient(135deg,#1e3a5f,#2d5f8f);display:flex;align-items:center;justify-content:center"><span style="color:#90caf9;font-family:'Playfair Display',serif;font-size:14px;font-weight:700">Ocean Blue</span></div>
+          <div style="padding:8px 10px;font-size:12px;background:var(--surface2)">Click to activate</div>
+        </div>
+        <div style="border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;opacity:.7">
+          <div style="height:80px;background:linear-gradient(135deg,#1b3a2d,#2d5f45);display:flex;align-items:center;justify-content:center"><span style="color:#a5d6a7;font-family:'Playfair Display',serif;font-size:14px;font-weight:700">Emerald</span></div>
+          <div style="padding:8px 10px;font-size:12px;background:var(--surface2)">Click to activate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="users-tab" class="tab-content">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="card-title mb-0">Team Members</div>
+        <button class="btn btn-sm">+ Add User</button>
+      </div>
+      <table class="crm-table">
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Proposals</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">AS</div>Ankita Sharma</div></td><td>info@stayfinderz.com</td><td><span class="badge badge-brand">Admin</span></td><td>47</td><td><span class="badge badge-accepted">Active</span></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:50%;background:#5b57d4;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">RK</div>Rahul Kumar</div></td><td>rahul@stayfinderz.com</td><td><span class="badge badge-draft">Consultant</span></td><td>12</td><td><span class="badge badge-accepted">Active</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+const crmData=[
+  {ref:'STF-2026-0047',v:'V2',client:'Rajesh Sharma',phone:'+91 98765 43210',email:'rajesh@gmail.com',dest:'Singapore 🇸🇬',dates:'15–20 Jul 2026',pax:'60 Adults',amount:'₹43,71,200',status:'viewed',consultant:'Ankita Sharma'},
+  {ref:'STF-2026-0046',v:'V1',client:'Meera Patel',phone:'+91 87654 32109',email:'meera.patel@gmail.com',dest:'Phuket 🇹🇭',dates:'29 May–4 Jun 2026',pax:'4A + 1C',amount:'₹3,12,000',status:'accepted',consultant:'Ankita Sharma'},
+  {ref:'STF-2026-0045',v:'V1',client:'Amit Gupta',phone:'+91 76543 21098',email:'amit.g@outlook.com',dest:'Hong Kong 🇭🇰',dates:'10–15 Jul 2026',pax:'2 Adults',amount:'₹2,48,500',status:'sent',consultant:'Rahul Kumar'},
+  {ref:'STF-2026-0044',v:'V3',client:'Priya Verma',phone:'+91 65432 10987',email:'priya.v@gmail.com',dest:'Dubai 🇦🇪',dates:'20–25 Jun 2026',pax:'4 Adults',amount:'₹1,89,000',status:'accepted',consultant:'Ankita Sharma'},
+  {ref:'STF-2026-0043',v:'V1',client:'Vikram Singh',phone:'+91 54321 09876',email:'vikram.s@gmail.com',dest:'Paris 🇫🇷',dates:'5–12 Aug 2026',pax:'2 Adults',amount:'₹4,20,000',status:'draft',consultant:'Rahul Kumar'},
+];
+
+const badgeMap={draft:'badge-draft',sent:'badge-sent',viewed:'badge-viewed',accepted:'badge-accepted',rejected:'badge-rejected'};
+const statusLabel={draft:'Draft',sent:'Sent',viewed:'Viewed',accepted:'Accepted',rejected:'Rejected'};
+
+function buildCRM(){
+  const tb=document.getElementById('crm-body');
+  if(!tb)return;
+  tb.innerHTML=crmData.map(r=>`<tr>
+    <td><span class="prop-num">${r.ref}</span></td>
+    <td><strong>${r.client}</strong><div style="font-size:11px;color:var(--ink3)">${r.phone}</div></td>
+    <td>${r.dest}</td>
+    <td style="font-size:12px">${r.dates}</td>
+    <td style="font-size:12px">${r.pax}</td>
+    <td style="font-weight:600;color:var(--ink)">${r.amount}</td>
+    <td><span class="badge ${badgeMap[r.status]}">${statusLabel[r.status]}</span></td>
+    <td style="font-size:12px;color:var(--ink2)">${r.consultant}</td>
+    <td><button class="btn btn-sm">Open</button></td>
+  </tr>`).join('');
+}
+
+const forexData=[
+  {flag:'🇺🇸',code:'USD',name:'US Dollar',base:'85.00',markup:'2.00'},
+  {flag:'🇸🇬',code:'SGD',name:'Singapore Dollar',base:'63.50',markup:'1.50'},
+  {flag:'🇦🇪',code:'AED',name:'UAE Dirham',base:'23.20',markup:'0.50'},
+  {flag:'🇬🇧',code:'GBP',name:'British Pound',base:'108.50',markup:'2.50'},
+  {flag:'🇪🇺',code:'EUR',name:'Euro',base:'92.00',markup:'2.00'},
+  {flag:'🇹🇭',code:'THB',name:'Thai Baht',base:'2.45',markup:'0.05'},
+];
+
+function buildForex(){
+  const el=document.getElementById('forex-table');
+  if(!el)return;
+  el.innerHTML=forexData.map(f=>`
+    <div class="forex-row">
+      <div style="display:flex;align-items:center;gap:8px"><span class="forex-flag">${f.flag}</span><div><div class="currency-code">${f.code}</div><div class="currency-name">${f.name}</div></div></div>
+      <div><input class="form-input" style="width:120px" value="${f.base}" id="base-${f.code}" oninput="updateEffective('${f.code}')"/></div>
+      <div><input class="form-input" style="width:120px" value="${f.markup}" id="mkup-${f.code}" oninput="updateEffective('${f.code}')"/></div>
+      <div id="eff-${f.code}" style="font-weight:600;color:var(--brand-dark);font-size:14px">₹${(parseFloat(f.base)+parseFloat(f.markup)).toFixed(2)}</div>
+    </div>
+  `).join('');
+}
+
+function updateEffective(code){
+  const b=parseFloat(document.getElementById('base-'+code)?.value||0);
+  const m=parseFloat(document.getElementById('mkup-'+code)?.value||0);
+  const el=document.getElementById('eff-'+code);
+  if(el)el.textContent='₹'+(b+m).toFixed(2);
+}
+
+function buildDestChart(){
+  const el=document.getElementById('dest-chart');
+  if(!el)return;
+  const dests=[{name:'Thailand',count:14,pct:30},{name:'Singapore',count:11,pct:23},{name:'Dubai',count:9,pct:19},{name:'Hong Kong',count:7,pct:15},{name:'Others',count:6,pct:13}];
+  el.innerHTML=dests.map(d=>`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+      <div style="font-size:12px;color:var(--ink2);width:80px">${d.name}</div>
+      <div style="flex:1;height:8px;background:var(--surface3);border-radius:4px;overflow:hidden">
+        <div style="width:${d.pct}%;height:100%;background:var(--brand);border-radius:4px"></div>
+      </div>
+      <div style="font-size:11px;color:var(--ink3);width:30px;text-align:right">${d.count}</div>
+    </div>
+  `).join('');
+}
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById('page-'+name);
+  if(p){p.classList.add('active');}
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  if(name==='new-proposal'){goWizardStep(1);}
+  if(name==='crm'){buildCRM();}
+  if(name==='admin'){buildForex();}
+}
+
+function showAdmin(section){
+  showPage('admin');
+  const tabs={company:'company-tab',forex:'forex-tab'};
+  if(tabs[section]){
+    setTimeout(()=>{
+      document.querySelectorAll('#page-admin .tab-content').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('#page-admin .tab').forEach(t=>t.classList.remove('active'));
+      const t=document.getElementById(tabs[section]);
+      if(t){t.classList.add('active');}
+    },50);
+  }
+  buildForex();
+}
+
+function showAdminTab(tabId,btn){
+  document.querySelectorAll('#page-admin .tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('#page-admin .tab').forEach(t=>t.classList.remove('active'));
+  const t=document.getElementById(tabId);
+  if(t)t.classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(tabId==='forex-tab')buildForex();
+}
+
+function showTab(tabId,btn){
+  const parent=btn.closest('.card')||btn.closest('.page');
+  if(parent){
+    parent.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    parent.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  }
+  const t=document.getElementById(tabId);
+  if(t)t.classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+let currentStep=1;
+function goWizardStep(step){
+  for(let i=1;i<=4;i++){
+    const s=document.getElementById('wizard-step-'+i);
+    if(s)s.style.display=i===step?'block':'none';
+  }
+  for(let i=1;i<=4;i++){
+    const num=document.getElementById('wnum-'+i);
+    const lbl=document.getElementById('wlabel-'+i);
+    if(!num||!lbl)continue;
+    if(i<step){num.className='wizard-step-num done';lbl.className='wizard-step-label';}
+    else if(i===step){num.className='wizard-step-num active';lbl.className='wizard-step-label active';}
+    else{num.className='wizard-step-num todo';lbl.className='wizard-step-label todo';}
+  }
+  for(let i=1;i<=3;i++){
+    const c=document.getElementById('wcon-'+i);
+    if(c)c.className='wizard-connector'+(i<step?' done':'');
+  }
+  currentStep=step;
+  if(step===2)document.getElementById('page-new-proposal').scrollTop=0;
+}
+
+function selectUploadType(type,el){
+  document.querySelectorAll('.upload-type').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  const fa=document.getElementById('upload-file-area');
+  const ta=document.getElementById('upload-text-area');
+  if(type==='text'){fa.style.display='none';ta.style.display='block';}
+  else{fa.style.display='block';ta.style.display='none';}
+}
+
+function handleFile(input){
+  if(!input.files||!input.files[0])return;
+  const f=input.files[0];
+  const fu=document.getElementById('files-uploaded');
+  const fn=document.getElementById('file-name');
+  const fs=document.getElementById('file-size');
+  if(fn)fn.textContent=f.name;
+  if(fs)fs.textContent=(f.size/1024).toFixed(0)+' KB';
+  if(fu)fu.style.display='flex';
+}
+
+function startExtraction(){
+  goWizardStep(2);
+  const loader=document.getElementById('ai-loader');
+  const form=document.getElementById('extraction-form');
+  const title=document.getElementById('ai-status-title');
+  const sub=document.getElementById('ai-status-sub');
+  if(!loader||!form)return;
+  loader.style.display='flex';
+  form.style.display='none';
+  const steps=[
+    ['Parsing document structure...','Identifying content blocks and tables'],
+    ['Extracting client information...','Reading travel dates, pax counts, destinations'],
+    ['Processing hotel details...','Room types, meal plans, check-in/out dates'],
+    ['Mapping itinerary...','Day-wise activities, transfers, sightseeing'],
+    ['Extracting pricing data...','Currency, per-person cost, inclusions/exclusions'],
+    ['Finalizing extraction...','Structuring all data for your review'],
+  ];
+  let i=0;
+  const interval=setInterval(()=>{
+    if(i<steps.length){
+      if(title)title.textContent=steps[i][0];
+      if(sub)sub.textContent=steps[i][1];
+      i++;
+    } else {
+      clearInterval(interval);
+      loader.style.display='none';
+      form.style.display='block';
+    }
+  },600);
+}
+
+function calcPricing(){
+  const type=document.getElementById('markup-type')?.value||'pkg-fixed';
+  const val=parseFloat(document.getElementById('markup-value')?.value)||0;
+  const supplierPP=72020,pax=60;
+  let markupTotal=0,markupPP=0;
+  if(type==='pkg-fixed'){markupTotal=val;markupPP=val/pax;}
+  else if(type==='pkg-pct'){markupTotal=supplierPP*pax*(val/100);markupPP=supplierPP*(val/100);}
+  else if(type==='pp-fixed'){markupPP=val;markupTotal=val*pax;}
+  else if(type==='pp-pct'){markupPP=supplierPP*(val/100);markupTotal=markupPP*pax;}
+  const sellPP=supplierPP+markupPP,sellTotal=sellPP*pax;
+  function fmt(n){return Math.round(n).toLocaleString('en-IN');}
+  const mpp=document.getElementById('markup-pp');
+  const mt=document.getElementById('markup-total');
+  const spp=document.getElementById('sell-pp');
+  const st=document.getElementById('sell-total');
+  if(mpp)mpp.textContent=fmt(markupPP);
+  if(mt)mt.textContent=fmt(markupTotal);
+  if(spp)spp.textContent=fmt(sellPP);
+  if(st)st.textContent=fmt(sellTotal);
+  const br=parseFloat(document.getElementById('base-rate')?.value||63.5);
+  const fm=parseFloat(document.getElementById('forex-markup')?.value||1.5);
+  const er=document.getElementById('effective-rate');
+  if(er)er.textContent=(br+fm).toFixed(2);
+}
+
+buildDestChart();
+calcPricing();
+</script>
+
+
+</body></html>
